@@ -6,10 +6,9 @@
             "command": "dotnet",
             "type": "process",
             "args": [
-                "build",
-                "-c",
-                "Debug",
-                "${workspaceFolder}/ModTemplate/ModTemplate.csproj"
+                "run",
+                "--project",
+                "${workspaceFolder}/CakeBuild/CakeBuild.csproj"
             ],
             "problemMatcher": "$msCompile"
         },

@@ -1,0 +1,13 @@
+{
+    "type": "code",
+    "modid": "unofficialbugfix",
+    "name": "Unofficial Bugfixes",
+    "authors": [
+        "Lazula"
+    ],
+    "description": "Bugfixes that aren't yet in a released version of the game.",
+    "version": "0.0.1",
+    "dependencies": {
+        "game": "1.21.0-pre.1"
+    }
+}

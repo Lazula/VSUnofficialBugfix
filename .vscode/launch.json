@@ -21,7 +21,7 @@
                 // "--openWorld" , "modding test world",
                 "--tracelog",
                 "--addModPath",
-                "${workspaceFolder}/ModTemplate/bin/Debug/Mods"
+                "${workspaceFolder}/VSUnofficialBugfix/bin/Debug/Mods"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
@@ -41,7 +41,7 @@
             "args": [
                 "--tracelog",
                 "--addModPath",
-                "${workspaceFolder}/ModTemplate/bin/Debug/Mods"
+                "${workspaceFolder}/VSUnofficialBugfix/bin/Debug/Mods"
             ],
             "console": "internalConsole",
             "stopAtEntry": false
@@ -51,7 +51,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build (Cake)",
-            "program": "${workspaceFolder}/CakeBuild/bin/Debug/net7.0/CakeBuild.dll",
+            "program": "${workspaceFolder}/CakeBuild/bin/Debug/net8.0/CakeBuild.dll",
             "args": [],
             "cwd": "${workspaceFolder}/CakeBuild",
             "stopAtEntry": false,

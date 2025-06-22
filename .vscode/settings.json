@@ -1,5 +1,5 @@
 {
-  "dotnet.defaultSolution": "ModTemplate.sln",
+  "dotnet.defaultSolution": "UnofficialBugfix.sln",
   "files.associations": {
     "server-*.txt": "log",
     "client-*.txt": "log"
