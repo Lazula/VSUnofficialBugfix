@@ -25,6 +25,11 @@ for the inconvenience.
   suitability when displaying what can eat the contents, e.g.
   chickens cannot eat from large troughs.
 
+* Issue [#5168](https://github.com/anegostudios/VintageStory-Issues/issues/5168):
+  Fix being unable to catch female hares and foxes in basket traps that are
+  either unable to mate or have already eaten enough to mate. Applies to all
+  eating, alongside any modded entities with the "eatAnyway" property.
+
 ## Licensing
 
 This work is distributed under the GNU GPL-3.0 license, with the
