@@ -18,17 +18,27 @@ for the inconvenience.
 
 ## Current Patches
 
-* VSSurvivalMod PR [#115](https://github.com/anegostudios/vssurvivalmod/pull/115);
+* Fixed in 1.21.0-pre.2:
+  VSSurvivalMod PR [#115](https://github.com/anegostudios/vssurvivalmod/pull/115);
   Issues [#6010](https://github.com/anegostudios/VintageStory-Issues/issues/6010)
   and [#4462](https://github.com/anegostudios/VintageStory-Issues/issues/4462):
   Fix troughs only using creature diets and not trough
   suitability when displaying what can eat the contents, e.g.
-  chickens cannot eat from large troughs.
+  chickens cannot eat from large troughs. The display also uses the below patch
+  for fixing listed creature diets, so the ones that we have to change will still
+  show up properly like pigs being able to eat fruit mash.
 
-* Issue [#5168](https://github.com/anegostudios/VintageStory-Issues/issues/5168):
-  Fix being unable to catch female hares and foxes in basket traps that are
-  either unable to mate or have already eaten enough to mate. Applies to all
-  eating, alongside any modded entities with the "eatAnyway" property.
+* Fixed in 1.21.0-pre.2 (no related issues or pull requests):
+  Fix creature diet food tags (e.g. fruitmash) always being empty. Restores some broken
+  functionality for troughs, basket traps, beehive looting, berry bush looting, and
+  crop eating. Some are already partially functional due to using food categories instead
+  of food tags. **This patch will not work on modded creatures due to patching
+  limitations.** The technical reason is that the weighted tags are protected instead of
+  public, which causes deserialization to fail. We can't hook into the method
+  IsSuitableFor that provides the diet matching method due being part of an interface,
+  and hooking into creature diet construction also doesn't work because we have
+  no entity data to work with. Thus the patch is implemented as just a hook on every
+  vanilla implementor. Modders are free to copy the code for their own implementors.
 
 ## Licensing
 

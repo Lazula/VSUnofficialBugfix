@@ -70,6 +70,7 @@ internal static class FixBETroughBlockInfo {
             if (attr == null || attr["creatureDiet"].Exists == false) continue;
 
             var diet = attr["creatureDiet"].AsObject<CreatureDiet>();
+            FixAnimalFoodSourceIsSuitableFor.FixAnimalFoodSourceIsSuitableFor.FixCreatureDietForTroughBlockInfo(entityType, diet);
             if (diet.Matches(contentsStack) && __instance.Block is BlockTroughBase trough)
             {
                 if(!trough.UnsuitableForEntity(entityType.Code.Path)) {

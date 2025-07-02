@@ -18,6 +18,9 @@ using VSSurvivalMod;
 using HarmonyLib;
 using UnofficialBugfix;
 
+// This patch technically works but seems to have something missing to make it
+// do what it's supposed to.
+
 namespace UnofficialBugfix.FixEntityBehaviorMultiplyEatAnyway
 {
 [HarmonyPatchCategory("unofficialbugfix")]
@@ -36,7 +39,13 @@ public static class FixEntityBehaviorMultiplyEatAnyway {
     [HarmonyPatch("ShouldEat", MethodType.Getter)]
     public static void OverrideEntityBehaviorMultiplyEatAnyway(EntityBehaviorMultiply __instance, bool __result) {
         // No recheck needed for anything else.
-        __result |= GetTypeAttributes(__instance)["eatAnyway"].AsBool();
+        bool eatAnyway = GetTypeAttributes(__instance)["eatAnyway"].AsBool();
+        if (eatAnyway && !__result)
+        {
+            // This method could be one line but logging is conditional.
+            //UnofficialBugfix.UnofficialBugfixModSystem.Logger.Notification("Overrode eatAnyway with type attribute");
+            __result = true;
+        }
     }
 }
 }
