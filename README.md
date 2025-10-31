@@ -7,6 +7,13 @@ will not be adding any special compatibility. Both content and
 code mods might become incompatible if they try to touch the
 same parts of the code that I do.
 
+Please note that the below may not be relevant if it's a stable
+patch number difference, such as 1.21.4 vs 1.21.5, instead of a version
+difference such as 1.20.x vs 1.21.x. It's just there as a catchall
+reminder that this mod is probably more likely than most to break on
+an update or prevent new functionality from appearing without
+intervention from myself to update it.
+
 This mod is not planned to ever support anything other than
 the most recent version available, including unstable releases.
 Development time going towards old versions would simply be wasted
@@ -18,27 +25,46 @@ for the inconvenience.
 
 ## Current Patches
 
-* Fixed in 1.21.0-pre.2:
-  VSSurvivalMod PR [#115](https://github.com/anegostudios/vssurvivalmod/pull/115);
-  Issues [#6010](https://github.com/anegostudios/VintageStory-Issues/issues/6010)
-  and [#4462](https://github.com/anegostudios/VintageStory-Issues/issues/4462):
-  Fix troughs only using creature diets and not trough
-  suitability when displaying what can eat the contents, e.g.
-  chickens cannot eat from large troughs. The display also uses the below patch
-  for fixing listed creature diets, so the ones that we have to change will still
-  show up properly like pigs being able to eat fruit mash.
+* VSSurvivalMod PR [#155](https://github.com/anegostudios/vssurvivalmod/pull/155);
+  Issue [#1714](https://github.com/anegostudios/VintageStory-Issues/issues/1714):
+  Fix reed plants dropping when broken without a knife when already harvested. Reed
+  plants are supposed to never drop their root when broken without a knife. This fixes
+  that and maintains breaking the fully-grown plant without a knife dropping the reed.
 
-* Fixed in 1.21.0-pre.2 (no related issues or pull requests):
-  Fix creature diet food tags (e.g. fruitmash) always being empty. Restores some broken
-  functionality for troughs, basket traps, beehive looting, berry bush looting, and
-  crop eating. Some are already partially functional due to using food categories instead
-  of food tags. **This patch will not work on modded creatures due to patching
-  limitations.** The technical reason is that the weighted tags are protected instead of
-  public, which causes deserialization to fail. We can't hook into the method
-  IsSuitableFor that provides the diet matching method due being part of an interface,
-  and hooking into creature diet construction also doesn't work because we have
-  no entity data to work with. Thus the patch is implemented as just a hook on every
-  vanilla implementor. Modders are free to copy the code for their own implementors.
+* VSEssentialsMod PR [#30](https://github.com/anegostudios/vsessentialsmod/pull/30):
+  Applies the effects of game time to detoxification. You can now sleep off your drinks.
+  By the way, did you know that a full litre of distilled alcohol provides 1.5 intoxication
+  even though the maximum is 1.1? Hold ctrl while collecting your liquid to pull out 1/10th
+  of your container's capacity. (See the next patch too!)
+
+* VSSurvivalMod PR [#154](https://github.com/anegostudios/vssurvivalmod/pull/154):
+  In the base game, ANY amount of alcohol will apply the intoxication of a full litre.
+  This patch adds the missing line of code to scale intoxication by quantity, so 0.1L
+  will add 1/10th of the intoxication as 1L as expected.
+
+* Issue [#7353](https://github.com/anegostudios/VintageStory-Issues/issues/7353):
+  There is currently absolutely no way to repair bear hide armor in the base game.
+  This patch allows a large pelt, huge pelt, or any bear pelt with or without the head
+  to be used to fully repair both the durability and clothing condition for any piece of
+  hide armor. I chose to allow a large pelt because repair recipes are coded to require
+  half as many ingredients as it takes to create the armor. I think this is reasonably
+  balanced because some bears only provide large pelts, but I'm not being too particular
+  about forcing the use of huge/bear hides for certain species because it's easier and I'm
+  erring towards making the repair cheaper rather than more expensive because bear hide
+  armor is rather weak in the first place.
+
+* Issue [#7352](https://github.com/anegostudios/VintageStory-Issues/issues/7352):
+  The base game's soldering iron recipe is weird. You can use a chisel with 1 durability
+  to produce a soldering iron with 56 durability and the extra durability varies. Because
+  there isn't a single clear fix for this, I decided to simply copy the durability from
+  the chisel to the soldering iron. This means a 400/600 durability chisel creates a
+  400/500 durability soldering iron. It's still a bit exploitable because a 500/600
+  chisel creates a 500/500 soldering iron, but I don't want to change the base durability of
+  either of them and we can just pretend the soldering iron has 600 durability.
+
+* Issue [#7464](https://github.com/anegostudios/VintageStory-Issues/issues/7464):
+  Fix golden takins having a 20% chance to break reed basket trap instead of the intended 40%.
+  The trapping data for goats mistakenly uses the wrong prefix for takin (goat-takin-* instead of goat-takingold-*), which causes takin to use the default instead of their own value.
 
 ## Licensing
 

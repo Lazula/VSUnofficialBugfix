@@ -1,0 +1,47 @@
+[
+	{
+		ingredientPattern: "A,H",
+		recipeGroup: 2,
+		ingredients: {
+			"A": { type: "item", code: "game:armor-head-hide-bear-*", name: "species" },
+			"H": { type: "item", code: "game:hide-pelt-*", allowedVariants: [ "large", "huge", "bear-black-complete", "bear-brown-complete", "bear-panda-complete", "bear-polar-complete", "bear-sun-complete", "bear-black-body", "bear-brown-body", "bear-panda-body", "bear-polar-body", "bear-sun-body" ] }
+		},
+		width: 1,
+		height: 2,
+		shapeless: true,
+		averageDurability: false,
+		copyAttributesFrom: 'A',
+		name: "bear hide helmet repair",
+		output: { type: "item", code: "game:armor-head-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "A,H",
+		recipeGroup: 2,
+		ingredients: {
+			"A": { type: "item", code: "game:armor-body-hide-bear-*", name: "species" },
+			"H": { type: "item", code: "game:hide-pelt-*", allowedVariants: [ "large", "huge", "bear-black-complete", "bear-brown-complete", "bear-panda-complete", "bear-polar-complete", "bear-sun-complete", "bear-black-body", "bear-brown-body", "bear-panda-body", "bear-polar-body", "bear-sun-body" ] }
+		},
+		width: 1,
+		height: 2,
+		shapeless: true,
+		averageDurability: false,
+		copyAttributesFrom: 'A',
+		name: "bear hide body armor repair",
+		output: { type: "item", code: "game:armor-body-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "A,H",
+		recipeGroup: 2,
+		ingredients: {
+			"A": { type: "item", code: "game:armor-legs-hide-bear-*", name: "species" },
+			"H": { type: "item", code: "game:hide-pelt-*", allowedVariants: [ "large", "huge", "bear-black-complete", "bear-brown-complete", "bear-panda-complete", "bear-polar-complete", "bear-sun-complete", "bear-black-body", "bear-brown-body", "bear-panda-body", "bear-polar-body", "bear-sun-body" ] }
+		},
+		width: 1,
+		height: 2,
+		shapeless: true,
+		averageDurability: false,
+		copyAttributesFrom: 'A',
+		name: "bear hide leg armor repair",
+		output: { type: "item", code: "game:armor-legs-hide-bear-{species}"  }
+	}
+]

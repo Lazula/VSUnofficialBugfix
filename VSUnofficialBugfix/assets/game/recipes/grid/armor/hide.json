@@ -1,0 +1,80 @@
+[
+	{
+		ingredientPattern: "BRB,RHR,BRB",
+		recipeGroup: 1,
+		ingredients: {
+			"B": { type: "item", code: "bone", quantity: 2, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"R": { type: "item", code: "rope", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"H": { type: "item", code: "hide-pelt-bear-*-complete", name: "species", quantity: 1 }
+		},
+		width: 3,
+		height: 3,
+		name: "hidebodyarmor",
+		output: { type: "item", code: "armor-head-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "BRB,RHR,BRB",
+		recipeGroup: 1,
+		ingredients: {
+			"B": { type: "item", code: "bone", quantity: 2, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"R": { type: "item", code: "rope", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"H": { type: "item", code: "hide-pelt-bear-*-complete", name: "species", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 1 } } }
+		},
+		width: 3,
+		height: 3,
+		name: "hidebodyarmor",
+		output: { type: "item", code: "armor-head-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "BRB,RHR,BRB",
+		recipeGroup: 1,
+		ingredients: {
+			"B": { type: "item", code: "bone", quantity: 2, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"R": { type: "item", code: "rope", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"H": { type: "item", code: "hide-pelt-bear-*-complete", name: "species", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 1 } } }
+		},
+		width: 3,
+		height: 3,
+		name: "hidebodyarmor",
+		output: { type: "item", code: "armor-body-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "BRB,RHR,BRB",
+		recipeGroup: 1,
+		ingredients: {
+			"B": { type: "item", code: "bone", quantity: 2, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"R": { type: "item", code: "rope", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"H": { type: "item", code: "hide-pelt-bear-*-body", name: "species", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 1 } } }
+		},
+		width: 3,
+		height: 3,
+		name: "hidebodyarmor",
+		output: { type: "item", code: "armor-body-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "RHR,BRB",
+		recipeGroup: 1,
+		ingredients: {
+			"B": { type: "item", code: "bone", quantity: 2, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"R": { type: "item", code: "rope", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"H": { type: "item", code: "hide-pelt-bear-*-complete", name: "species", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 1 } } }
+		},
+		width: 3,
+		height: 2,
+		name: "hidebodyarmor",
+		output: { type: "item", code: "armor-legs-hide-bear-{species}"  }
+	},
+	{
+		ingredientPattern: "RHR,BRB",
+		recipeGroup: 1,
+		ingredients: {
+			"B": { type: "item", code: "bone", quantity: 2, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"R": { type: "item", code: "rope", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 0 } } },
+			"H": { type: "item", code: "hide-pelt-bear-*-body", name: "species", quantity: 1, recipeAttributes: { repairMat: { type: "item", code: "hide-pelt-large", stacksize: 1 } } }
+		},
+		width: 3,
+		height: 2,
+		name: "hidebodyarmor",
+		output: { type: "item", code: "armor-legs-hide-bear-{species}"  }
+	}
+]
