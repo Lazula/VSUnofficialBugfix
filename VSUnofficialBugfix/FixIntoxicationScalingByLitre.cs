@@ -29,7 +29,7 @@ internal static class FixIntoxicationScalingByLitre {
     [HarmonyPostfix()]
     [HarmonyPatch(typeof(BlockLiquidContainerBase))]
     [HarmonyPatch("GetNutritionProperties")]
-    public static void AddIntoxScalingPerLitre(FoodNutritionProperties __result, BlockLiquidContainerBase __instance, IWorldAccessor world, ItemStack itemstack, Entity forEntity) {
+    public static void AddIntoxScalingPerLitre(ref FoodNutritionProperties __result, BlockLiquidContainerBase __instance, IWorldAccessor world, ItemStack itemstack, Entity forEntity) {
         ItemStack contentStack = __instance.GetContent(itemstack);
 
         if (contentStack == null) {
