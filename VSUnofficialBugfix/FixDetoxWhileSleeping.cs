@@ -21,7 +21,7 @@ using UnofficialBugfix;
 namespace UnofficialBugfix.FixDetoxWhileSleeping
 {
 
-[HarmonyPatchCategory("unofficialbugfix")]
+[HarmonyPatchCategory("unofficialbugfix-tox")]
 internal static class FixDetoxWhileSleeping {
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "ReduceSaturation")]
     private static extern bool ReduceSaturation(EntityBehaviorHunger instance, float satLossMultiplier);

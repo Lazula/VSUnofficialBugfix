@@ -20,10 +20,17 @@ namespace UnofficialBugfix
         public override void Start(ICoreAPI api)
         {
             if (!Harmony.HasAnyPatches(Mod.Info.ModID)) {
-                Mod.Logger.Notification(Lang.Get("unofficialbugfix:loading"));
-
                 patcher = new Harmony(Mod.Info.ModID);
                 patcher.PatchCategory(Mod.Info.ModID);
+
+                if (api.ModLoader.IsModSystemEnabled("SlowTox.SlowToxSystem")) {
+                    Mod.Logger.Notification(Lang.Get("unofficialbugfix:tox-patches-off"));
+                } else {
+                    patcher.PatchCategory($"{Mod.Info.ModID}-tox");
+                    Mod.Logger.Notification(Lang.Get("unofficialbugfix:tox-patches-on"));
+                }
+
+                Mod.Logger.Notification(Lang.Get("unofficialbugfix:loading"));
             }
         }
 

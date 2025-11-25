@@ -1,3 +1,5 @@
 {
-    "unofficialbugfix:loading": "Applying bugfix patches."
+    "unofficialbugfix:tox-patches-on": "SlowTox not detected, applying tox patches.",
+    "unofficialbugfix:tox-patches-off": "SlowTox detected, not applying tox patches.",
+    "unofficialbugfix:loading": "Applied bugfix patches."
 }

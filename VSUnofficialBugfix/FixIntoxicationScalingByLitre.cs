@@ -21,7 +21,7 @@ using UnofficialBugfix;
 namespace UnofficialBugfix.FixIntoxicationScalingByLitre
 {
 
-[HarmonyPatchCategory("unofficialbugfix")]
+[HarmonyPatchCategory("unofficialbugfix-tox")]
 internal static class FixIntoxicationScalingByLitre {
     /// BUG: FoodNutritionProperties.GetNutritionProperties() does not scale
     /// WaterTightContainableProps.Intoxication by its litre value.
