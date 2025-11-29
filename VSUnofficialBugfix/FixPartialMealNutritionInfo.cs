@@ -49,7 +49,7 @@ internal static class FixPartialMealNutritionInfo {
         {
             float servingsLeft = mealStack.Attributes.GetFloat("quantityServings", 1);
             float[] nmul = __instance.GetNutritionHealthMul(null, inSlot, null);
-            string facts = __instance.GetContentNutritionFacts(world, inSlot, stacks, null, true, servingsLeft * nmul[0], servingsLeft * nmul[1]);
+            string facts = __instance.GetContentNutritionFacts(world, inSlot, stacks, null, false, servingsLeft * nmul[0], servingsLeft * nmul[1]);
 
             if (facts != null)
             {
