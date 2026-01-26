@@ -1,0 +1,8 @@
+[
+    {
+        "file": "game:itemtypes/liquid/tar",
+        "path": "/attributes/handbook/exclude",
+        "op": "addmerge",
+        "value": true
+    }
+]

@@ -1,7 +1,0 @@
-{
-    attributes: {
-        handbook: {
-            exclude: true
-        }
-    }
-}
