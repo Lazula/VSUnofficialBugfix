@@ -1,0 +1,16 @@
+[
+    {
+        "file": "game:entities/humanoid/trader-buildmaterials",
+        "path": "/server/behaviors/0/selectFromRandomName",
+        "op": "replace",
+        "value": [
+            "Humbert",
+            "Miguel",
+            "Sasha",
+            "Onyx",
+            "Old Eyes",
+            "Haldor",
+            "Whel"
+        ]
+    }
+]
