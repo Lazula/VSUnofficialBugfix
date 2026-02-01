@@ -1,0 +1,50 @@
+[
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/8/code",
+        "op": "replace",
+        "value": "soakedhidebears-lime"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/9/code",
+        "op": "replace",
+        "value": "soakedhidebears-lime"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/10/code",
+        "op": "replace",
+        "value": "soakedhidebears-lime"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/11/code",
+        "op": "replace",
+        "value": "soakedhidebears-lime"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/8/code",
+        "op": "replace",
+        "value": "soakedhidebears-borax"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/9/code",
+        "op": "replace",
+        "value": "soakedhidebears-borax"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/10/code",
+        "op": "replace",
+        "value": "soakedhidebears-borax"
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/11/code",
+        "op": "replace",
+        "value": "soakedhidebears-borax"
+    }
+]

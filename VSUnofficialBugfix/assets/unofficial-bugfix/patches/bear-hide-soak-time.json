@@ -1,0 +1,26 @@
+[
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/8/sealHours",
+        "op": "replace",
+        "value": 20
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/9/sealHours",
+        "op": "replace",
+        "value": 20
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/10/sealHours",
+        "op": "replace",
+        "value": 20
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/11/sealHours",
+        "op": "replace",
+        "value": 20
+    }
+]
