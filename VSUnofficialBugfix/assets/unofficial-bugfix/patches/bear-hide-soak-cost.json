@@ -1,0 +1,78 @@
+[
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/8/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "black",
+            "panda",
+            "sun"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/9/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "brown",
+            "polar"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/10/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "black",
+            "panda",
+            "sun"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-lime",
+        "path": "/11/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "brown",
+            "polar"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/8/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "black",
+            "panda",
+            "sun"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/9/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "brown",
+            "polar"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/10/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "black",
+            "panda",
+            "sun"
+        ]
+    },
+    {
+        "file": "game:recipes/barrel/soakedhide-borax",
+        "path": "/11/ingredients/1/allowedVariants",
+        "op": "replace",
+        "value": [
+            "brown",
+            "polar"
+        ]
+    }
+]
