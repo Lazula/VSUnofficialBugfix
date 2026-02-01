@@ -1,0 +1,22 @@
+[
+    {
+        "file": "game:itemtypes/resource/crushed/powder",
+        "path": "/variantgroups/0/states",
+        "op": "replace",
+        "value": [
+            "charcoal",
+            "flint",
+            "sulfur",
+            "borax",
+            "sylvite"
+        ]
+    },
+    {
+        "file": "game:itemtypes/resource/crushed/powder-graded",
+        "path": "/variantgroups/1/states",
+        "op": "replace",
+        "value": [
+            "oxide"
+        ]
+    }
+]
