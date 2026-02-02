@@ -40,7 +40,6 @@ internal static class FixLiquidCombineFreshness
 
     private static int CustomTryPutLiquid1(BlockLiquidContainerBase self, ItemStack containerStack, ItemStack liquidStack, float desiredLitres)
     {
-        Console.WriteLine("Entered BlockLiquidContainerBase.CustomTryPutLiquid1(ItemStack, ItemStack, float).");
         ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
         if (liquidStack == null) return 0;
 
@@ -106,7 +105,6 @@ internal static class FixLiquidCombineFreshness
 
     private static int CustomTryPutLiquid2(BlockLiquidContainerBase self, BlockPos pos, ItemStack liquidStack, float desiredLitres)
     {
-        Console.WriteLine("Entered BlockLiquidContainerBase.CustomTryPutLiquid2(BlockPos, ItemStack, float).");
         ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
 
         if (liquidStack == null) return 0;
