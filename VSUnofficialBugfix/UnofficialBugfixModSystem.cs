@@ -11,6 +11,7 @@ global using Vintagestory.API.Common.Entities;
 global using Vintagestory.API.Config;
 global using Vintagestory.API.Datastructures;
 global using Vintagestory.API.MathTools;
+global using Vintagestory.API.Server;
 global using Vintagestory.API.Util;
 global using Vintagestory.GameContent;
 
