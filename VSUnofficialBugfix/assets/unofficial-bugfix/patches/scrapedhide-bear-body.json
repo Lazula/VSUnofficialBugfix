@@ -1,0 +1,12 @@
+[
+	{
+		"file": "game:recipes/grid/scrapedhide",
+		"path": "/2",
+		"op": "remove"
+	},
+	{
+		"file": "game:recipes/grid/scrapedhide",
+		"path": "/3",
+		"op": "remove"
+	}
+]
