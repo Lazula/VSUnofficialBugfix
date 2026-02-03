@@ -1,0 +1,14 @@
+[
+	{
+		"file": "game:recipes/grid/tool/solderingiron",
+		"path": "/averageDurability",
+		"op": "add",
+		"value": false
+	},
+	{
+		"file": "game:recipes/grid/tool/solderingiron",
+		"path": "/copyAttributesFrom",
+		"op": "add",
+		"value": "T"
+	}
+]
