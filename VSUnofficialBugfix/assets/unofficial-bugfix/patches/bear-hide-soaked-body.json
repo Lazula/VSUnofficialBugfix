@@ -1,0 +1,8 @@
+[
+    {
+        "file": "game:itemtypes/resource/hide-species",
+        "path": "/skipVariants/-",
+        "op": "addmerge",
+        "value": "hide-soaked-bear-*-body"
+    }
+]
