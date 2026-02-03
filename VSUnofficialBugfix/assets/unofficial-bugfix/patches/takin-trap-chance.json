@@ -1,0 +1,8 @@
+[
+	{
+		"file": "game:entities/animal/mammal/hooved/goat-adult",
+		"op": "move",
+		"frompath": "/attributes/trappableByType/goat-takin-*",
+		"path": "/attributes/trappableByType/goat-takingold-*"
+	}
+]
