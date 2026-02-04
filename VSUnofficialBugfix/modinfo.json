@@ -6,7 +6,7 @@
         "Lazula"
     ],
     "description": "Bugfixes that aren't yet in a released version of the game.",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "dependencies": {
         "game": "1.21.6"
     }
