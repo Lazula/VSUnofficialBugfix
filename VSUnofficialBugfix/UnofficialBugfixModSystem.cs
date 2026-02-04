@@ -14,6 +14,7 @@ global using Vintagestory.API.MathTools;
 global using Vintagestory.API.Server;
 global using Vintagestory.API.Util;
 global using Vintagestory.GameContent;
+global using Vintagestory.GameContent.Mechanics;
 
 global using HarmonyLib;
 
