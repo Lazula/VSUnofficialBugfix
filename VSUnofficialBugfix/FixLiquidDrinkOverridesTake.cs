@@ -18,8 +18,12 @@ internal static class FixLiquidDrinkOverridesTake
         return false;
     }
 
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "OnHeldInteractStart")]
-    private static extern void OnHeldInteractStart(BlockLiquidContainerBase instance, ItemSlot itemslot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling);
+
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(CollectibleObject))]
+    [HarmonyPatch("OnHeldInteractStart")]
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void CollectibleObjectOnHeldInteractStart(CollectibleObject instance, ItemSlot itemslot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling) { }
 
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "tryEatBegin")]
     private static extern void tryEatBegin(BlockLiquidContainerBase instance, ItemSlot slot, EntityAgent byEntity, ref EnumHandHandling handling, string eatSound = "eat", int eatSoundRepeats = 1);
@@ -57,7 +61,7 @@ internal static class FixLiquidDrinkOverridesTake
 
             if (!byEntity.Controls.ShiftKey || (byEntity.Controls.ShiftKey && !lookingAtLiquidContainer))
             {
-                OnHeldInteractStart(self, itemslot, byEntity, blockSel, entitySel, firstEvent, ref handHandling);
+                CollectibleObjectOnHeldInteractStart(self, itemslot, byEntity, blockSel, entitySel, firstEvent, ref handHandling);
             }
 
             return;
