@@ -1,7 +1,7 @@
-namespace UnofficialBugfix.FixBakedFreshness;
+namespace UnofficialBugfix.FixBEClayOvenBakedFreshness;
 
 [HarmonyPatchCategory("unofficialbugfix")]
-internal static class FixBakedFreshness
+internal static class FixBEClayOvenBakedFreshness
 {
     // Separated from other clay oven fixes because
     // we have to reach into pie too, and I would
