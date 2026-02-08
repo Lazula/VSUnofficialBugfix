@@ -1,6 +1,6 @@
 namespace UnofficialBugfix.FixIntoxicationScalingByLitre;
 
-[HarmonyPatchCategory("unofficialbugfix-tox")]
+[HarmonyPatchCategory("unofficialbugfix-noncompat-slowtox")]
 internal static class FixIntoxicationScalingByLitre
 {
     /// BUG: FoodNutritionProperties.GetNutritionProperties() does not scale

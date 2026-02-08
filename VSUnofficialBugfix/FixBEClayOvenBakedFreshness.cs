@@ -1,6 +1,6 @@
 namespace UnofficialBugfix.FixBEClayOvenBakedFreshness;
 
-[HarmonyPatchCategory("unofficialbugfix")]
+[HarmonyPatchCategory("unofficialbugfix-noncompat-xskills")]
 internal static class FixBEClayOvenBakedFreshness
 {
     // Separated from other clay oven fixes because

@@ -26,6 +26,37 @@ public class UnofficialBugfixModSystem : ModSystem
     public static ICoreAPI Api { get; private set; }
     private Harmony patcher;
 
+    public class CompatInfo
+    {
+        public string CategoryId { get; }
+        public string Name { get; }
+        public bool ModFound { get; }
+
+        public CompatInfo(string categoryId, string name)
+        {
+            CategoryId = categoryId;
+            Name = name;
+            ModFound = Api.ModLoader.IsModEnabled(name);
+        }
+
+        public CompatInfo(string categoryId, string name, string systemName)
+        {
+            CategoryId = categoryId;
+            Name = name;
+            ModFound = Api.ModLoader.IsModSystemEnabled($"{name}.{systemName}");
+        }
+
+        public void PrintCompatString()
+        {
+            Logger.Notification(Lang.Get(
+                "unofficial-bugfix:compat-notif",
+                Name,
+                Lang.Get(ModFound ? "unofficial-bugfix:found" : "unofficial-bugfix:not found"),
+                Lang.Get(ModFound ? "unofficial-bugfix:disabled" : "unofficial-bugfix:enabled")
+            ));
+        }
+    }
+
     public override void StartPre(ICoreAPI api)
     {
         Logger = Mod.Logger;
@@ -39,17 +70,22 @@ public class UnofficialBugfixModSystem : ModSystem
             patcher = new Harmony(Mod.Info.ModID);
             patcher.PatchCategory(Mod.Info.ModID);
 
-            if (api.ModLoader.IsModSystemEnabled("SlowTox.SlowToxSystem"))
+            List<CompatInfo> allCompat = new List<CompatInfo>([
+                new CompatInfo("noncompat-slowtox", "SlowTox", "SlowToxSystem"),
+                new CompatInfo("noncompat-xskills", "XSkills", "XSkills")
+            ]);
+
+            foreach (CompatInfo ci in allCompat)
             {
-                Mod.Logger.Notification(Lang.Get("unofficialbugfix:tox-patches-off"));
-            }
-            else
-            {
-                patcher.PatchCategory($"{Mod.Info.ModID}-tox");
-                Mod.Logger.Notification(Lang.Get("unofficialbugfix:tox-patches-on"));
+                if (!ci.ModFound)
+                {
+                    patcher.PatchCategory($"{Mod.Info.ModID}-{ci.CategoryId}");
+                }
+
+                ci.PrintCompatString();
             }
 
-            Mod.Logger.Notification(Lang.Get("unofficialbugfix:loading"));
+            Mod.Logger.Notification(Lang.Get("unofficial-bugfix:loaded"));
         }
     }
 

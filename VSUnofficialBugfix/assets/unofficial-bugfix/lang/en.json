@@ -1,5 +1,8 @@
 {
-    "unofficialbugfix:tox-patches-on": "SlowTox not detected, applying tox patches.",
-    "unofficialbugfix:tox-patches-off": "SlowTox detected, not applying tox patches.",
-    "unofficialbugfix:loading": "Applied bugfix patches."
+    "compat-notif": "{0} {1}, {2} incompatible patches.",
+    "found": "found",
+    "not found": "not found",
+    "enabled": "enabled",
+    "disabled": "disabled",
+    "loaded": "Applied bugfix patches."
 }

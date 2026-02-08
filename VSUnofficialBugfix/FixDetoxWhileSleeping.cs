@@ -1,6 +1,6 @@
 namespace UnofficialBugfix.FixDetoxWhileSleeping;
 
-[HarmonyPatchCategory("unofficialbugfix-tox")]
+[HarmonyPatchCategory("unofficialbugfix-noncompat-slowtox")]
 internal static class FixDetoxWhileSleeping
 {
     [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "ReduceSaturation")]
