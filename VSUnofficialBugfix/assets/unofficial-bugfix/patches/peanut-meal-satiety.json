@@ -1,0 +1,8 @@
+[
+    {
+        "file": "game:itemtypes/food/legume",
+        "path": "/attributes/nutritionPropsWhenInMeal/satietyByType/*-peanut",
+        "op": "replace",
+        "value": 210
+    }
+]
