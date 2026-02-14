@@ -35,6 +35,7 @@ public static class FixMealNonPerishTransition
     }
 
 #nullable enable
+    #region UpdateAndGetTransitionStates
 
     [HarmonyPrefix()]
     [HarmonyPatch(typeof(BlockMeal))]
@@ -235,4 +236,261 @@ public static class FixMealNonPerishTransition
 
         return states;
     }
+
+    #endregion
+    #region GetHeldItemInfo
+
+    /// Fix the display issue
+
+    [HarmonyReversePatch]
+    [HarmonyPatch(typeof(BlockContainer))]
+    [HarmonyPatch("GetHeldItemInfo")]
+    public static void BlockContainerGetHeldItemInfo(BlockContainer __instance, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) { }
+
+    // Single-state text is protected
+    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "AppendPerishableInfoText")]
+    private static extern float ProtectedAppendPerishableInfoText(CollectibleObject self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, TransitionState state, bool nowSpoiling);
+
+
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockMeal))]
+    [HarmonyPatch("GetHeldItemInfo")]
+    public static bool FixBlockMealGetHeldItemInfo(BlockMeal __instance, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        CustomBlockMealGetHeldItemInfo(__instance, inSlot, dsc, world, withDebugInfo);
+        return false;
+    }
+
+    public static void CustomBlockMealGetHeldItemInfo(BlockMeal self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
+        bool displayContentsInfo = Traverse.Create(self).Field("displayContentsInfo").Field("api").GetValue<bool>();
+
+        if (inSlot.Itemstack is not ItemStack mealStack) return;
+        BlockContainerGetHeldItemInfo(self, inSlot, dsc, world, withDebugInfo);
+        float temp = self.GetTemperature(world, mealStack);
+        if (temp > 20)
+        {
+            dsc.AppendLine(Lang.Get("Temperature: {0}°C", (int)temp));
+        }
+
+        CookingRecipe? recipe = self.GetCookingRecipe(world, mealStack);
+
+        ItemStack[] stacks = self.GetNonEmptyContents(world, mealStack);
+        DummyInventory dummyInv = new DummyInventory(api);
+        ItemSlot dummySlot = BlockCrock.GetDummySlotForFirstPerishableStack(api.World, stacks, null, dummyInv);
+
+        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
+        {
+            float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, mealStack) ?? 1;
+            if (transType != EnumTransitionType.Perish) mul = 0;
+            return invMul * self.GetContainingTransitionModifierContained(world, inSlot, transType);
+        };
+
+        if (dummySlot.Itemstack is ItemStack stack &&
+            stack.Collectible.UpdateAndGetTransitionStates(api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+        {
+            ProtectedAppendPerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
+        }
+
+        float servings = self.GetQuantityServings(world, mealStack);
+
+        if (recipe != null)
+        {
+            if (Math.Round(servings, 1) < 0.05)
+            {
+                dsc.AppendLine(Lang.Get("{1}% serving of {0}", recipe.GetOutputName(world, stacks).UcFirst(), Math.Round(servings * 100, 0)));
+            }
+            else
+            {
+                dsc.AppendLine(Lang.Get("{0} serving of {1}", Math.Round(servings, 1), recipe.GetOutputName(world, stacks).UcFirst()));
+            }
+
+        }
+        else if (mealStack.Attributes.HasAttribute("quantityServings"))
+        {
+            if (Math.Round(servings, 1) < 0.05)
+            {
+                dsc.AppendLine(Lang.Get("meal-servingsleft-percent", Math.Round(servings * 100, 0)));
+            }
+            else dsc.AppendLine(Lang.Get("{0} servings left", Math.Round(servings, 1)));
+        }
+        else if (displayContentsInfo && !MealMeshCache.ContentsRotten(stacks))
+        {
+            dsc.AppendLine(Lang.Get("Contents: {0}", Lang.Get("meal-ingredientlist-" + stacks.Length, stacks.Select(stack => Lang.Get("{0}x {1}", stack.StackSize, stack.GetName())))));
+        }
+
+        if (!MealMeshCache.ContentsRotten(stacks))
+        {
+            // We'll calculate for the serving size if it's less than 1.
+            servings = Math.Min(1, servings);
+            float[] nmul = self.GetNutritionHealthMul(null, inSlot, null);
+            string facts = self.GetContentNutritionFacts(world, inSlot, stacks, null, recipe == null, servings * nmul[0], servings * nmul[1]);
+
+            if (facts != null)
+            {
+                dsc.Append(facts);
+            }
+        }
+    }
+
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockCrock))]
+    [HarmonyPatch("GetHeldItemInfo")]
+    public static bool FixBlockCrockGetHeldItemInfo(BlockCrock __instance, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        CustomBlockCrockGetHeldItemInfo(__instance, inSlot, dsc, world, withDebugInfo);
+        return false;
+    }
+
+    public static void CustomBlockCrockGetHeldItemInfo(BlockCrock self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
+
+        BlockContainerGetHeldItemInfo(self, inSlot, dsc, world, withDebugInfo);
+
+        if (inSlot.Itemstack is not ItemStack crockStack) return;
+
+        CookingRecipe? recipe = self.GetCookingRecipe(world, crockStack);
+        ItemStack[]? stacks = self.GetNonEmptyContents(world, crockStack);
+
+        if (stacks == null || stacks.Length == 0)
+        {
+            dsc.AppendLine(Lang.Get("Empty"));
+
+            if (crockStack.Attributes.GetBool("sealed") == true)
+            {
+                dsc.AppendLine("<font color=\"lightgreen\">" + Lang.Get("Sealed.") + "</font>");
+            }
+
+            return;
+        }
+
+        DummyInventory dummyInv = new DummyInventory(api);
+        ItemSlot dummySlot = BlockCrock.GetDummySlotForFirstPerishableStack(api.World, stacks, null, dummyInv);
+
+        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
+        {
+            float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, crockStack) ?? 1;
+            if (transType != EnumTransitionType.Perish) invMul = 0;
+            return invMul * self.GetContainingTransitionModifierContained(world, inSlot, transType);
+        };
+
+
+        if (recipe != null)
+        {
+            double servings = crockStack.Attributes.GetDecimal("quantityServings");
+
+            if (recipe != null)
+            {
+                if (servings == 1)
+                {
+                    dsc.AppendLine(Lang.Get("{0} serving of {1}", Math.Round(servings, 1), recipe.GetOutputName(world, stacks)));
+                }
+                else
+                {
+                    dsc.AppendLine(Lang.Get("{0} servings of {1}", Math.Round(servings, 1), recipe.GetOutputName(world, stacks)));
+                }
+            }
+
+            string? facts = BlockMeal.AllMealBowls(api)?[0]?.GetContentNutritionFacts(world, inSlot, null);
+            if (facts != null)
+            {
+                dsc.Append(facts);
+            }
+
+
+
+        }
+        else if (crockStack.Attributes.HasAttribute("quantityServings"))
+        {
+            double servings = crockStack.Attributes.GetDecimal("quantityServings");
+
+            if (Math.Round(servings, 1) < 0.05)
+            {
+                dsc.AppendLine(Lang.Get("meal-servingsleft-percent", Math.Round(servings * 100, 0)));
+            }
+            else dsc.AppendLine(Lang.Get("{0} servings left", Math.Round(servings, 1)));
+        }
+        else if (!MealMeshCache.ContentsRotten(stacks))
+        {
+            dsc.AppendLine(Lang.Get("Contents: {0}", Lang.Get("meal-ingredientlist-" + stacks.Length, stacks.Select(stack => Lang.Get("{0}x {1}", stack.StackSize, stack.GetName())))));
+        }
+
+        if (dummySlot.Itemstack is ItemStack stack &&
+            stack.Collectible.UpdateAndGetTransitionStates(api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+        {
+            ProtectedAppendPerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
+        }
+
+        if (crockStack.Attributes.GetBool("sealed"))
+        {
+            dsc.AppendLine("<font color=\"lightgreen\">" + Lang.Get("Sealed.") + "</font>");
+        }
+    }
+
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockCookedContainer))]
+    [HarmonyPatch("GetHeldItemInfo")]
+    public static bool FixBlockCookedContainerGetHeldItemInfo(BlockCookedContainer __instance, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        CustomBlockCookedContainerGetHeldItemInfo(__instance, inSlot, dsc, world, withDebugInfo);
+        return false;
+    }
+
+    public static void CustomBlockCookedContainerGetHeldItemInfo(BlockCookedContainer self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo)
+    {
+        ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
+        if (inSlot.Itemstack is not ItemStack cookedContStack) return;
+        BlockContainerGetHeldItemInfo(self, inSlot, dsc, world, withDebugInfo);
+        float temp = self.GetTemperature(world, cookedContStack);
+        if (temp > 20)
+        {
+            dsc.AppendLine(Lang.Get("Temperature: {0}°C", (int)temp));
+        }
+
+        CookingRecipe? recipe = self.GetMealRecipe(world, cookedContStack);
+        float servings = cookedContStack.Attributes.GetFloat("quantityServings");
+
+        ItemStack[] stacks = self.GetNonEmptyContents(world, cookedContStack);
+
+
+        if (recipe != null)
+        {
+            string message;
+            string outputName = recipe.GetOutputName(world, stacks);
+            if (recipe.CooksInto != null)
+            {
+                message = "nonfood-portions";
+            }
+            else
+            {
+                message = "{0} servings of {1}";
+            }
+            dsc.AppendLine(Lang.Get(message, Math.Round(servings, 1), outputName));
+        }
+
+        string? nutriFacts = BlockMeal.AllMealBowls(api)?[0]?.GetContentNutritionFacts(api.World, inSlot, stacks, null);
+
+        if (nutriFacts != null && recipe?.CooksInto == null) dsc.AppendLine(nutriFacts);
+
+        if (cookedContStack.Attributes.GetBool("timeFrozen")) return;
+
+        DummyInventory dummyInv = new DummyInventory(api);
+
+        ItemSlot dummySlot = BlockCrock.GetDummySlotForFirstPerishableStack(api.World, stacks, null, dummyInv);
+        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
+        {
+            float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, cookedContStack) ?? 1;
+            if (transType != EnumTransitionType.Perish) invMul = 0;
+            return invMul * self.GetContainingTransitionModifierContained(world, inSlot, transType);
+        };
+
+        if (dummySlot.Itemstack is ItemStack stack &&
+            stack.Collectible.UpdateAndGetTransitionStates(api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+        {
+            ProtectedAppendPerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
+        }
+    }
+    #endregion
 }
