@@ -6,173 +6,118 @@ public static class FixMealNonPerishTransition
 
     /// Backport of 1.22 bugfix that prevents
     /// non-perish transitions such as drying
-    /// from occuring for itemstacks in meals.
+    /// from occuring for itemstacks in meals. <summary>
 
-    [HarmonyReversePatch]
-    [HarmonyPatch(typeof(BlockContainer))]
-    [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static TransitionState[] BlockContainerUpdateAndGetTransitionStates(BlockContainer __instance, IWorldAccessor world, ItemSlot inslot) => null;
-
-    /// Backport of a new method on BlockContainer in 1.22
-    /// 
-    /// This is where we overwrite the non-perish multipliers.
-    private static ItemSlot GetContentInDummySlot(BlockContainer self, ItemSlot inslot, ItemStack itemstack)
+    #region GetContentInDummySlot
+    public static ItemSlot BlockContainerGetContentInDummySlot(BlockContainer self, ItemSlot inslot, ItemStack itemstack)
     {
         ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
-
-        ItemSlot dummySlot;
         DummyInventory dummyInv = new DummyInventory(api);
-        dummySlot = new DummySlot(itemstack, dummyInv);
+        ItemSlot dummySlot = new DummySlot(itemstack, dummyInv);
         dummySlot.MarkedDirty += () => { inslot.Inventory?.DidModifyItemSlot(inslot); return true; };
 
         dummyInv.OnAcquireTransitionSpeed += (transType, stack, mulByConfig) =>
         {
             float mul = inslot.Inventory?.InvokeTransitionSpeedDelegates(transType, stack, mulByConfig) ?? 1;
+            if (transType != EnumTransitionType.Perish) mul = 0;
             return mul * self.GetContainingTransitionModifierContained(api.World, inslot, transType);
         };
 
         return dummySlot;
     }
 
-#nullable enable
-    #region UpdateAndGetTransitionStates
-
-    [HarmonyPrefix()]
-    [HarmonyPatch(typeof(BlockMeal))]
-    [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static bool FixBlockMealUpdateAndGetTransitionStates(BlockMeal __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
+    private static ItemSlot BlockMealGetContentInDummySlot(BlockMeal self, ItemSlot inslot, ItemStack itemstack)
     {
-        __result = CustomBlockMealUpdateAndGetTransitionStates(__instance, world, inslot);
-        return false;
+        ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
+        DummyInventory dummyInv = new DummyInventory(api);
+        ItemSlot dummySlot = new DummySlot(itemstack, dummyInv);
+        dummySlot.MarkedDirty += () => { inslot.Inventory?.DidModifyItemSlot(inslot); return true; };
+
+        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mulByConfig) =>
+        {
+            float mul = inslot.Inventory?.InvokeTransitionSpeedDelegates(transType, stack, mulByConfig) ?? 1;
+            if (transType != EnumTransitionType.Perish) mul = 0;
+            return mul * self.GetContainingTransitionModifierContained(api.World, inslot, transType);
+        };
+
+        return dummySlot;
     }
 
-    public static TransitionState[]? CustomBlockMealUpdateAndGetTransitionStates(BlockMeal self, IWorldAccessor world, ItemSlot inslot)
+    private static ItemSlot BlockCookedContainerBaseGetContentInDummySlot(BlockCookedContainerBase self, ItemSlot inslot, ItemStack itemstack)
     {
-        if (inslot.Itemstack is not ItemStack mealStack) return null;
+        ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
+        DummyInventory dummyInv = new DummyInventory(api);
+        ItemSlot dummySlot = new DummySlot(itemstack, dummyInv);
+        dummySlot.MarkedDirty += () => { inslot.Inventory?.DidModifyItemSlot(inslot); return true; };
 
-        ItemStack[] stacks = self.GetNonEmptyContents(world, mealStack);
-        foreach (var stack in stacks)
+        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mulByConfig) =>
         {
-            stack.StackSize *= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+            float mul = inslot.Inventory?.InvokeTransitionSpeedDelegates(transType, stack, mulByConfig) ?? 1;
+            if (transType != EnumTransitionType.Perish) mul = 0;
+            return mul * self.GetContainingTransitionModifierContained(api.World, inslot, transType);
+        };
+
+        return dummySlot;
+    }
+
+    #endregion
+
+
+    #region UpdateAndGetTransitionStates
+
+    public static TransitionState[] CustomBlockContainerUpdateAndGetTransitionStates(BlockContainer self, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot is ItemSlotCreative) return CustomCollectibleObjectUpdateAndGetTransitionStates(self, world, inslot);
+
+        ItemStack[] stacks = self.GetContents(world, inslot.Itemstack);
+
+        if (inslot.Itemstack.Attributes.GetBool("timeFrozen"))
+        {
+            foreach (var stack in stacks) stack?.Attributes.SetBool("timeFrozen", true);
+            return null;
         }
 
-        self.SetContents(mealStack, stacks);
-
-        TransitionState[]? states = BlockContainerUpdateAndGetTransitionStates(self, world, inslot);
-
-        stacks = self.GetNonEmptyContents(world, mealStack);
-        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
+        if (stacks != null)
         {
             for (int i = 0; i < stacks.Length; i++)
             {
-                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
-                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
+                var stack = stacks[i];
+                if (stack == null) continue;
 
-                if (spoilProps == null) continue;
-
-                stacks[i] = stacks[i].Collectible.OnTransitionNow(GetContentInDummySlot(self, inslot, stacks[i]), spoilProps);
-            }
-            self.SetContents(mealStack, stacks);
-
-            mealStack.Attributes.RemoveAttribute("recipeCode");
-            mealStack.Attributes.RemoveAttribute("quantityServings");
-        }
-
-        foreach (var stack in stacks)
-        {
-            stack.StackSize /= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-
-            if (stack.Collectible?.GetTransitionableProperties(world, stack, null) is TransitionableProperties[] allProps)
-            {
-                foreach (TransitionableProperties tprops in allProps)
+                ItemSlot dummySlot = BlockContainerGetContentInDummySlot(self, inslot, stack);
+                CustomCollectibleObjectUpdateAndGetTransitionStates(stack.Collectible, world, dummySlot);
+                if (dummySlot.Itemstack == null)
                 {
-                    if (tprops.Type != EnumTransitionType.Perish)
-                    {
-                        stack.Collectible.SetTransitionState(stack, tprops.Type, 0);
-                    }
+                    stacks[i] = null;
                 }
             }
         }
 
-        self.SetContents(mealStack, stacks);
+        self.SetContents(inslot.Itemstack, stacks);
 
-        if (stacks.Length == 0 &&
-            AssetLocation.CreateOrNull(self.Attributes?["eatenBlock"]?.AsString()) is AssetLocation loc &&
-            world.GetBlock(loc) is Block block)
-        {
-            inslot.Itemstack = new ItemStack(block);
-            inslot.MarkDirty();
-        }
+        return CustomCollectibleObjectUpdateAndGetTransitionStates(self, world, inslot);
+    }
 
-        return states;
+    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "AppendPerishableInfoText")]
+    private static extern float CollectibleObjectAppendSinglePerishableInfoText(CollectibleObject self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, TransitionState state, bool nowSpoiling);
+
+#nullable enable
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockMeal))]
+    [HarmonyPatch("UpdateAndGetTransitionStates")]
+    public static bool FixBlockMealUpdateAndGetTransitionStates(BlockMeal __instance, ref TransitionState[] __result, IWorldAccessor world, ItemSlot inslot)
+    {
+        __result = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
+        return false;
     }
 
     [HarmonyPrefix()]
     [HarmonyPatch(typeof(BlockCookedContainer))]
     [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static bool FixBlockCookedContainerUpdateAndGetTransitionStates(BlockCookedContainer __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
+    public static bool FixBlockCookedContainerUpdateAndGetTransitionStates(BlockCookedContainer __instance, ref TransitionState[] __result, IWorldAccessor world, ItemSlot inslot)
     {
-        __result = CustomBlockCookedContainerUpdateAndGetTransitionStates(__instance, world, inslot);
+        __result = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
         return false;
-    }
-
-    public static TransitionState[]? CustomBlockCookedContainerUpdateAndGetTransitionStates(BlockCookedContainer self, IWorldAccessor world, ItemSlot inslot)
-    {
-        if (inslot.Itemstack is not ItemStack cookedContStack) return null;
-
-        ItemStack[] stacks = self.GetNonEmptyContents(world, cookedContStack);
-        foreach (var stack in stacks)
-        {
-            stack.StackSize *= (int)Math.Max(1, cookedContStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-        }
-
-        self.SetContents(cookedContStack, stacks);
-
-        TransitionState[]? states = BlockContainerUpdateAndGetTransitionStates(self, world, inslot);
-
-        stacks = self.GetNonEmptyContents(world, cookedContStack);
-        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
-        {
-            for (int i = 0; i < stacks.Length; i++)
-            {
-                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
-                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
-
-                if (spoilProps == null) continue;
-
-                stacks[i] = stacks[i].Collectible.OnTransitionNow(GetContentInDummySlot(self, inslot, stacks[i]), spoilProps);
-            }
-            self.SetContents(cookedContStack, stacks);
-
-            cookedContStack.Attributes.RemoveAttribute("recipeCode");
-            cookedContStack.Attributes.RemoveAttribute("quantityServings");
-        }
-
-        foreach (var stack in stacks)
-        {
-            stack.StackSize /= (int)Math.Max(1, cookedContStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-
-            if (stack.Collectible?.GetTransitionableProperties(world, stack, null) is TransitionableProperties[] allProps)
-            {
-                foreach (TransitionableProperties tprops in allProps)
-                {
-                    if (tprops.Type != EnumTransitionType.Perish)
-                    {
-                        stack.Collectible.SetTransitionState(stack, tprops.Type, 0);
-                    }
-                }
-            }
-        }
-
-        self.SetContents(cookedContStack, stacks);
-
-        if (stacks.Length == 0 && self.Attributes?["emptiedBlockCode"]?.AsString() is string emptiedBlockCode && world.GetBlock(new AssetLocation(emptiedBlockCode)) is Block block)
-        {
-            inslot.Itemstack = new ItemStack(block);
-            inslot.MarkDirty();
-        }
-
-        return states;
     }
 
     [HarmonyPrefix()]
@@ -180,25 +125,19 @@ public static class FixMealNonPerishTransition
     [HarmonyPatch("UpdateAndGetTransitionStates")]
     public static bool FixBlockCrockUpdateAndGetTransitionStates(BlockCrock __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
     {
-        __result = CustomBlockCrockUpdateAndGetTransitionStates(__instance, world, inslot);
-        return false;
-    }
+        if (inslot.Itemstack is not ItemStack crockStack) { __result = null; return false; }
 
-    public static TransitionState[]? CustomBlockCrockUpdateAndGetTransitionStates(BlockCrock self, IWorldAccessor world, ItemSlot inslot)
-    {
-        if (inslot.Itemstack is not ItemStack crockStack) return null;
-
-        ItemStack[] stacks = self.GetNonEmptyContents(world, crockStack);
+        ItemStack[] stacks = __instance.GetNonEmptyContents(world, crockStack);
         foreach (var stack in stacks)
         {
             stack.StackSize *= (int)Math.Max(1, crockStack.Attributes.TryGetFloat("quantityServings") ?? 1);
         }
 
-        self.SetContents(crockStack, stacks);
+        __instance.SetContents(crockStack, stacks);
 
-        TransitionState[]? states = BlockContainerUpdateAndGetTransitionStates(self, world, inslot);
+        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
 
-        stacks = self.GetNonEmptyContents(world, crockStack);
+        stacks = __instance.GetNonEmptyContents(world, crockStack);
         if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
         {
             for (int i = 0; i < stacks.Length; i++)
@@ -208,9 +147,9 @@ public static class FixMealNonPerishTransition
 
                 if (spoilProps == null) continue;
 
-                stacks[i] = stacks[i].Collectible.OnTransitionNow(GetContentInDummySlot(self, inslot, stacks[i]), spoilProps);
+                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockCookedContainerBaseGetContentInDummySlot(__instance, inslot, stacks[i]), spoilProps);
             }
-            self.SetContents(crockStack, stacks);
+            __instance.SetContents(crockStack, stacks);
 
             crockStack.Attributes.RemoveAttribute("recipeCode");
             crockStack.Attributes.RemoveAttribute("quantityServings");
@@ -219,22 +158,234 @@ public static class FixMealNonPerishTransition
         foreach (var stack in stacks)
         {
             stack.StackSize /= (int)Math.Max(1, crockStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
 
-            if (stack.Collectible?.GetTransitionableProperties(world, stack, null) is TransitionableProperties[] allProps)
+        __instance.SetContents(crockStack, stacks);
+
+        __result = states;
+        return false;
+    }
+
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockMeal))]
+    [HarmonyPatch("UpdateAndGetTransitionStates")]
+    public static bool UpdateAndGetTransitionStates(BlockMeal __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot.Itemstack is not ItemStack mealStack) { __result = null; return false; }
+
+        ItemStack[] stacks = __instance.GetNonEmptyContents(world, mealStack);
+        foreach (var stack in stacks)
+        {
+            stack.StackSize *= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        __instance.SetContents(mealStack, stacks);
+
+        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
+
+        stacks = __instance.GetNonEmptyContents(world, mealStack);
+        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
+        {
+            for (int i = 0; i < stacks.Length; i++)
             {
-                foreach (TransitionableProperties tprops in allProps)
+                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
+                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
+
+                if (spoilProps == null) continue;
+
+                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockMealGetContentInDummySlot(__instance, inslot, stacks[i]), spoilProps);
+            }
+            __instance.SetContents(mealStack, stacks);
+
+            mealStack.Attributes.RemoveAttribute("recipeCode");
+            mealStack.Attributes.RemoveAttribute("quantityServings");
+        }
+
+        foreach (var stack in stacks)
+        {
+            stack.StackSize /= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        __instance.SetContents(mealStack, stacks);
+
+        if (stacks.Length == 0 &&
+            AssetLocation.CreateOrNull(__instance.Attributes?["eatenBlock"]?.AsString()) is AssetLocation loc &&
+            world.GetBlock(loc) is Block block)
+        {
+            inslot.Itemstack = new ItemStack(block);
+            inslot.MarkDirty();
+        }
+
+        __result = states;
+        return false;
+    }
+
+#nullable disable
+    public static TransitionState[] CustomCollectibleObjectUpdateAndGetTransitionStates(CollectibleObject self, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot is ItemSlotCreative) return null;
+
+        ItemStack itemstack = inslot.Itemstack;
+
+        TransitionableProperties[] propsm = self.GetTransitionableProperties(world, inslot.Itemstack, null);
+
+        if (itemstack == null || propsm == null || propsm.Length == 0)
+        {
+            return null;
+        }
+
+        if (itemstack.Attributes == null)
+        {
+            itemstack.Attributes = new TreeAttribute();
+        }
+
+        if (itemstack.Attributes.GetBool("timeFrozen")) return null;
+
+
+        if (!(itemstack.Attributes["transitionstate"] is ITreeAttribute))
+        {
+            itemstack.Attributes["transitionstate"] = new TreeAttribute();
+        }
+
+        ITreeAttribute attr = (ITreeAttribute)itemstack.Attributes["transitionstate"];
+
+
+        float[] transitionedHours;
+        float[] freshHours;
+        float[] transitionHours;
+        TransitionState[] states = new TransitionState[propsm.Length];
+
+        if (!attr.HasAttribute("createdTotalHours"))
+        {
+            attr.SetDouble("createdTotalHours", world.Calendar.TotalHours);
+            attr.SetDouble("lastUpdatedTotalHours", world.Calendar.TotalHours);
+
+            freshHours = new float[propsm.Length];
+            transitionHours = new float[propsm.Length];
+            transitionedHours = new float[propsm.Length];
+
+            for (int i = 0; i < propsm.Length; i++)
+            {
+                transitionedHours[i] = 0;
+                freshHours[i] = propsm[i].FreshHours.nextFloat(1, world.Rand);
+                transitionHours[i] = propsm[i].TransitionHours.nextFloat(1, world.Rand);
+            }
+
+            attr["freshHours"] = new FloatArrayAttribute(freshHours);
+            attr["transitionHours"] = new FloatArrayAttribute(transitionHours);
+            attr["transitionedHours"] = new FloatArrayAttribute(transitionedHours);
+        }
+        else
+        {
+            freshHours = (attr["freshHours"] as FloatArrayAttribute).value;
+            transitionHours = (attr["transitionHours"] as FloatArrayAttribute).value;
+            transitionedHours = (attr["transitionedHours"] as FloatArrayAttribute).value;
+
+            // A modder/dev might have added a new transition property since last time
+            int gw = propsm.Length - freshHours.Length;
+            if (gw > 0)
+            {
+                int i = freshHours.Length;
+                while (i < propsm.Length)
                 {
-                    if (tprops.Type != EnumTransitionType.Perish)
-                    {
-                        stack.Collectible.SetTransitionState(stack, tprops.Type, 0);
-                    }
+                    freshHours = freshHours.Append(propsm[i].FreshHours.nextFloat(1, world.Rand));
+                    transitionHours = transitionHours.Append(propsm[i].TransitionHours.nextFloat(1, world.Rand));
+                    transitionedHours = transitionedHours.Append(0);
+                    i++;
                 }
+                (attr["freshHours"] as FloatArrayAttribute).value = freshHours;
+                (attr["transitionHours"] as FloatArrayAttribute).value = transitionHours;
+                (attr["transitionedHours"] as FloatArrayAttribute).value = transitionedHours;
             }
         }
 
-        self.SetContents(crockStack, stacks);
+        double lastUpdatedTotalHours = attr.GetDouble("lastUpdatedTotalHours");
+        double nowTotalHours = world.Calendar.TotalHours;
 
-        return states;
+        bool nowSpoiling = false;
+
+        float hoursPassed = (float)(nowTotalHours - lastUpdatedTotalHours);
+
+        for (int i = 0; i < propsm.Length; i++)
+        {
+            TransitionableProperties prop = propsm[i];
+            if (prop == null) continue;
+
+            float transitionRateMul = self.GetTransitionRateMul(world, inslot, prop.Type);
+
+            if (hoursPassed > 0.05f) // Maybe prevents us from running into accumulating rounding errors?
+            {
+                float hoursPassedAdjusted = hoursPassed * transitionRateMul;
+                transitionedHours[i] += hoursPassedAdjusted;
+
+                /*if (api.World.Side == EnumAppSide.Server && inslot.Inventory.ClassName == "chest")
+                {
+                    Console.WriteLine(hoursPassed + " hours passed. " + inslot.Itemstack.Collectible.Code + " spoil by " + transitionRateMul + "x. Is inside " + inslot.Inventory.ClassName + " {0}/{1}", transitionedHours[i], freshHours[i]);
+                }*/
+            }
+
+            // Don't advance non-perish transitions
+            if (prop.Type != EnumTransitionType.Perish)
+            {
+                freshHours[i] = propsm[i].FreshHours.nextFloat(1, world.Rand);
+                transitionedHours[i] = 0;
+            }
+
+            float freshHoursLeft = Math.Max(0, freshHours[i] - transitionedHours[i]);
+            float transitionLevel = Math.Max(0, transitionedHours[i] - freshHours[i]) / transitionHours[i];
+
+            // Don't continue transitioning spoiled foods
+            if (transitionLevel > 0)
+            {
+                if (prop.Type == EnumTransitionType.Perish)
+                {
+                    nowSpoiling = true;
+                }
+                else
+                {
+                    if (nowSpoiling) continue;
+                }
+            }
+
+            if (transitionLevel >= 1 && world.Side == EnumAppSide.Server)
+            {
+                ItemStack newstack = self.OnTransitionNow(inslot, propsm[i]);
+
+                if (newstack.StackSize <= 0)
+                {
+                    inslot.Itemstack = null;
+                }
+                else
+                {
+                    itemstack.SetFrom(newstack);
+                }
+
+                inslot.MarkDirty();
+
+                // Only do one transformation, then do the next one next update
+                // This does fully not respect time-fast-forward, so that should be fixed some day
+                break;
+            }
+
+            states[i] = new TransitionState()
+            {
+                FreshHoursLeft = freshHoursLeft,
+                TransitionLevel = Math.Min(1, transitionLevel),
+                TransitionedHours = transitionedHours[i],
+                TransitionHours = transitionHours[i],
+                FreshHours = freshHours[i],
+                Props = prop
+            };
+
+            //if (transitionRateMul > 0) break; // Only do one transformation at the time (i.e. food can not cure and perish at the same time) - Tyron 9/oct 2020, but why not at the same time? We need it for cheese ripening
+        }
+
+        if (hoursPassed > 0.05f)
+        {
+            attr.SetDouble("lastUpdatedTotalHours", nowTotalHours);
+        }
+
+        return states.Where(s => s != null).OrderBy(s => (int)s.Props.Type).ToArray();
     }
 
     #endregion
@@ -242,15 +393,11 @@ public static class FixMealNonPerishTransition
 
     /// Fix the display issue
 
+#nullable enable
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(BlockContainer))]
     [HarmonyPatch("GetHeldItemInfo")]
     public static void BlockContainerGetHeldItemInfo(BlockContainer __instance, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, bool withDebugInfo) { }
-
-    // Single-state text is protected
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "AppendPerishableInfoText")]
-    private static extern float ProtectedAppendPerishableInfoText(CollectibleObject self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, TransitionState state, bool nowSpoiling);
-
 
     [HarmonyPrefix()]
     [HarmonyPatch(typeof(BlockMeal))]
@@ -279,7 +426,6 @@ public static class FixMealNonPerishTransition
         ItemStack[] stacks = self.GetNonEmptyContents(world, mealStack);
         DummyInventory dummyInv = new DummyInventory(api);
         ItemSlot dummySlot = BlockCrock.GetDummySlotForFirstPerishableStack(api.World, stacks, null, dummyInv);
-
         dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
         {
             float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, mealStack) ?? 1;
@@ -288,9 +434,9 @@ public static class FixMealNonPerishTransition
         };
 
         if (dummySlot.Itemstack is ItemStack stack &&
-            stack.Collectible.UpdateAndGetTransitionStates(api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+           CustomCollectibleObjectUpdateAndGetTransitionStates(stack.Collectible, api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
         {
-            ProtectedAppendPerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
+            CollectibleObjectAppendSinglePerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
         }
 
         float servings = self.GetQuantityServings(world, mealStack);
@@ -366,17 +512,6 @@ public static class FixMealNonPerishTransition
             return;
         }
 
-        DummyInventory dummyInv = new DummyInventory(api);
-        ItemSlot dummySlot = BlockCrock.GetDummySlotForFirstPerishableStack(api.World, stacks, null, dummyInv);
-
-        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
-        {
-            float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, crockStack) ?? 1;
-            if (transType != EnumTransitionType.Perish) invMul = 0;
-            return invMul * self.GetContainingTransitionModifierContained(world, inSlot, transType);
-        };
-
-
         if (recipe != null)
         {
             double servings = crockStack.Attributes.GetDecimal("quantityServings");
@@ -398,9 +533,6 @@ public static class FixMealNonPerishTransition
             {
                 dsc.Append(facts);
             }
-
-
-
         }
         else if (crockStack.Attributes.HasAttribute("quantityServings"))
         {
@@ -417,10 +549,20 @@ public static class FixMealNonPerishTransition
             dsc.AppendLine(Lang.Get("Contents: {0}", Lang.Get("meal-ingredientlist-" + stacks.Length, stacks.Select(stack => Lang.Get("{0}x {1}", stack.StackSize, stack.GetName())))));
         }
 
-        if (dummySlot.Itemstack is ItemStack stack &&
-            stack.Collectible.UpdateAndGetTransitionStates(api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+        DummyInventory dummyInv = new DummyInventory(api);
+
+        ItemSlot dummySlot = BlockCrock.GetDummySlotForFirstPerishableStack(api.World, stacks, null, dummyInv);
+        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
         {
-            ProtectedAppendPerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
+            float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, crockStack) ?? 1;
+            if (transType != EnumTransitionType.Perish) mul = 0;
+            return invMul * self.GetContainingTransitionModifierContained(world, inSlot, transType);
+        };
+
+        if (dummySlot.Itemstack is ItemStack stack &&
+            CustomCollectibleObjectUpdateAndGetTransitionStates(stack.Collectible, api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+        {
+            CollectibleObjectAppendSinglePerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
         }
 
         if (crockStack.Attributes.GetBool("sealed"))
@@ -482,14 +624,14 @@ public static class FixMealNonPerishTransition
         dummyInv.OnAcquireTransitionSpeed += (transType, stack, mul) =>
         {
             float invMul = inSlot.Inventory?.GetTransitionSpeedMul(transType, cookedContStack) ?? 1;
-            if (transType != EnumTransitionType.Perish) invMul = 0;
+            if (transType != EnumTransitionType.Perish) mul = 0;
             return invMul * self.GetContainingTransitionModifierContained(world, inSlot, transType);
         };
 
         if (dummySlot.Itemstack is ItemStack stack &&
-            stack.Collectible.UpdateAndGetTransitionStates(api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
+            CustomCollectibleObjectUpdateAndGetTransitionStates(stack.Collectible, api.World, dummySlot)?.FirstOrDefault(state => state.Props.Type is EnumTransitionType.Perish) is TransitionState perishState)
         {
-            ProtectedAppendPerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
+            CollectibleObjectAppendSinglePerishableInfoText(stack.Collectible, dummySlot, dsc, world, perishState, false);
         }
     }
     #endregion
