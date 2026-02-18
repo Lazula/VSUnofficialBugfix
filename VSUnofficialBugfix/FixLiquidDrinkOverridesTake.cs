@@ -50,8 +50,9 @@ internal static class FixLiquidDrinkOverridesTake
             // with liquid handling before calling up to
             // the base method because it will call out to
             // tryEatBegin and hijack our control flow.
+
             bool lookingAtLiquidContainer = blockSel != null && api.World.BlockAccessor.GetBlock(blockSel.Position) is BlockLiquidContainerBase;
-            bool shouldDrink = !lookingAtLiquidContainer && self.CanDrinkFrom && self.GetNutritionProperties(byEntity.World, itemslot.Itemstack, byEntity) != null;
+            bool shouldDrink = (blockSel == null || !byEntity.Controls.ShiftKey) && self.CanDrinkFrom && self.GetNutritionProperties(byEntity.World, itemslot.Itemstack, byEntity) != null;
 
             if (handHandling != EnumHandHandling.PreventDefaultAction && shouldDrink)
             {
