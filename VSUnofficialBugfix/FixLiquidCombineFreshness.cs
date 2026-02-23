@@ -74,6 +74,12 @@ internal static class FixLiquidCombineFreshness
 
             int moved = GameMath.Min(availItems, placeableItems, desiredItems);
 
+            // Prevent potential divide by zero
+            if (moved == 0)
+            {
+                return 0;
+            }
+
             // Average freshness before adding
             if (stack.Collectible.GetTransitionableProperties(api.World, stack, null) is TransitionableProperties[] tprops)
             {
@@ -136,6 +142,12 @@ internal static class FixLiquidCombineFreshness
 
             int placeableItems = (int)Math.Min(availItems, maxItems - (float)stack.StackSize);
             int movedItems = Math.Min(placeableItems, desiredItems);
+
+            // Prevent potential divide by zero
+            if (movedItems == 0)
+            {
+                return 0;
+            }
 
             // Average freshness before adding
             if (stack.Collectible.GetTransitionableProperties(api.World, stack, null) is TransitionableProperties[] tprops)
