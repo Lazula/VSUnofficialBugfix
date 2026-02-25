@@ -3,30 +3,12 @@ namespace UnofficialBugfix.FixMealNonPerishTransition;
 [HarmonyPatchCategory("unofficialbugfix")]
 public static class FixMealNonPerishTransition
 {
-
     /// Backport of 1.22 bugfix that prevents
     /// non-perish transitions such as drying
     /// from occuring for itemstacks in meals. <summary>
 
     #region GetContentInDummySlot
     public static ItemSlot BlockContainerGetContentInDummySlot(BlockContainer self, ItemSlot inslot, ItemStack itemstack)
-    {
-        ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
-        DummyInventory dummyInv = new DummyInventory(api);
-        ItemSlot dummySlot = new DummySlot(itemstack, dummyInv);
-        dummySlot.MarkedDirty += () => { inslot.Inventory?.DidModifyItemSlot(inslot); return true; };
-
-        dummyInv.OnAcquireTransitionSpeed += (transType, stack, mulByConfig) =>
-        {
-            float mul = inslot.Inventory?.InvokeTransitionSpeedDelegates(transType, stack, mulByConfig) ?? 1;
-            if (transType != EnumTransitionType.Perish) mul = 0;
-            return mul * self.GetContainingTransitionModifierContained(api.World, inslot, transType);
-        };
-
-        return dummySlot;
-    }
-
-    private static ItemSlot BlockMealGetContentInDummySlot(BlockMeal self, ItemSlot inslot, ItemStack itemstack)
     {
         ICoreAPI api = Traverse.Create(self).Field("api").GetValue<ICoreAPI>();
         DummyInventory dummyInv = new DummyInventory(api);
@@ -65,162 +47,7 @@ public static class FixMealNonPerishTransition
 
     #region UpdateAndGetTransitionStates
 
-    public static TransitionState[] CustomBlockContainerUpdateAndGetTransitionStates(BlockContainer self, IWorldAccessor world, ItemSlot inslot)
-    {
-        if (inslot is ItemSlotCreative) return CustomCollectibleObjectUpdateAndGetTransitionStates(self, world, inslot);
 
-        ItemStack[] stacks = self.GetContents(world, inslot.Itemstack);
-
-        if (inslot.Itemstack.Attributes.GetBool("timeFrozen"))
-        {
-            foreach (var stack in stacks) stack?.Attributes.SetBool("timeFrozen", true);
-            return null;
-        }
-
-        if (stacks != null)
-        {
-            for (int i = 0; i < stacks.Length; i++)
-            {
-                var stack = stacks[i];
-                if (stack == null) continue;
-
-                ItemSlot dummySlot = BlockContainerGetContentInDummySlot(self, inslot, stack);
-                CustomCollectibleObjectUpdateAndGetTransitionStates(stack.Collectible, world, dummySlot);
-                if (dummySlot.Itemstack == null)
-                {
-                    stacks[i] = null;
-                }
-            }
-        }
-
-        self.SetContents(inslot.Itemstack, stacks);
-
-        return CustomCollectibleObjectUpdateAndGetTransitionStates(self, world, inslot);
-    }
-
-    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "AppendPerishableInfoText")]
-    private static extern float CollectibleObjectAppendSinglePerishableInfoText(CollectibleObject self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, TransitionState state, bool nowSpoiling);
-
-#nullable enable
-    [HarmonyPrefix()]
-    [HarmonyPatch(typeof(BlockMeal))]
-    [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static bool FixBlockMealUpdateAndGetTransitionStates(BlockMeal __instance, ref TransitionState[] __result, IWorldAccessor world, ItemSlot inslot)
-    {
-        __result = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
-        return false;
-    }
-
-    [HarmonyPrefix()]
-    [HarmonyPatch(typeof(BlockCookedContainer))]
-    [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static bool FixBlockCookedContainerUpdateAndGetTransitionStates(BlockCookedContainer __instance, ref TransitionState[] __result, IWorldAccessor world, ItemSlot inslot)
-    {
-        __result = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
-        return false;
-    }
-
-    [HarmonyPrefix()]
-    [HarmonyPatch(typeof(BlockCrock))]
-    [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static bool FixBlockCrockUpdateAndGetTransitionStates(BlockCrock __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
-    {
-        if (inslot.Itemstack is not ItemStack crockStack) { __result = null; return false; }
-
-        ItemStack[] stacks = __instance.GetNonEmptyContents(world, crockStack);
-        foreach (var stack in stacks)
-        {
-            stack.StackSize *= (int)Math.Max(1, crockStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-        }
-
-        __instance.SetContents(crockStack, stacks);
-
-        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
-
-        stacks = __instance.GetNonEmptyContents(world, crockStack);
-        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
-        {
-            for (int i = 0; i < stacks.Length; i++)
-            {
-                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
-                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
-
-                if (spoilProps == null) continue;
-
-                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockCookedContainerBaseGetContentInDummySlot(__instance, inslot, stacks[i]), spoilProps);
-            }
-            __instance.SetContents(crockStack, stacks);
-
-            crockStack.Attributes.RemoveAttribute("recipeCode");
-            crockStack.Attributes.RemoveAttribute("quantityServings");
-        }
-
-        foreach (var stack in stacks)
-        {
-            stack.StackSize /= (int)Math.Max(1, crockStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-        }
-
-        __instance.SetContents(crockStack, stacks);
-
-        __result = states;
-        return false;
-    }
-
-    [HarmonyPrefix()]
-    [HarmonyPatch(typeof(BlockMeal))]
-    [HarmonyPatch("UpdateAndGetTransitionStates")]
-    public static bool UpdateAndGetTransitionStates(BlockMeal __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
-    {
-        if (inslot.Itemstack is not ItemStack mealStack) { __result = null; return false; }
-
-        ItemStack[] stacks = __instance.GetNonEmptyContents(world, mealStack);
-        foreach (var stack in stacks)
-        {
-            stack.StackSize *= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-        }
-
-        __instance.SetContents(mealStack, stacks);
-
-        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(__instance, world, inslot);
-
-        stacks = __instance.GetNonEmptyContents(world, mealStack);
-        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
-        {
-            for (int i = 0; i < stacks.Length; i++)
-            {
-                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
-                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
-
-                if (spoilProps == null) continue;
-
-                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockMealGetContentInDummySlot(__instance, inslot, stacks[i]), spoilProps);
-            }
-            __instance.SetContents(mealStack, stacks);
-
-            mealStack.Attributes.RemoveAttribute("recipeCode");
-            mealStack.Attributes.RemoveAttribute("quantityServings");
-        }
-
-        foreach (var stack in stacks)
-        {
-            stack.StackSize /= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
-        }
-
-        __instance.SetContents(mealStack, stacks);
-
-        if (stacks.Length == 0 &&
-            AssetLocation.CreateOrNull(__instance.Attributes?["eatenBlock"]?.AsString()) is AssetLocation loc &&
-            world.GetBlock(loc) is Block block)
-        {
-            inslot.Itemstack = new ItemStack(block);
-            inslot.MarkDirty();
-        }
-
-        __result = states;
-        return false;
-    }
-
-#nullable disable
     public static TransitionState[] CustomCollectibleObjectUpdateAndGetTransitionStates(CollectibleObject self, IWorldAccessor world, ItemSlot inslot)
     {
         if (inslot is ItemSlotCreative) return null;
@@ -388,12 +215,215 @@ public static class FixMealNonPerishTransition
         return states.Where(s => s != null).OrderBy(s => (int)s.Props.Type).ToArray();
     }
 
+    public static TransitionState[] CustomBlockContainerUpdateAndGetTransitionStates(BlockContainer self, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot is ItemSlotCreative) return CustomCollectibleObjectUpdateAndGetTransitionStates(self, world, inslot);
+
+        ItemStack[] stacks = self.GetContents(world, inslot.Itemstack);
+
+        if (inslot.Itemstack.Attributes.GetBool("timeFrozen"))
+        {
+            foreach (var stack in stacks) stack?.Attributes.SetBool("timeFrozen", true);
+            return null;
+        }
+
+        if (stacks != null)
+        {
+            for (int i = 0; i < stacks.Length; i++)
+            {
+                var stack = stacks[i];
+                if (stack == null) continue;
+
+                ItemSlot dummySlot = BlockContainerGetContentInDummySlot(self, inslot, stack);
+                CustomCollectibleObjectUpdateAndGetTransitionStates(stack.Collectible, world, dummySlot);
+                if (dummySlot.Itemstack == null)
+                {
+                    stacks[i] = null;
+                }
+            }
+        }
+
+        self.SetContents(inslot.Itemstack, stacks);
+
+        return CustomCollectibleObjectUpdateAndGetTransitionStates(self, world, inslot);
+    }
+
+    [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "AppendPerishableInfoText")]
+    private static extern float CollectibleObjectAppendSinglePerishableInfoText(CollectibleObject self, ItemSlot inSlot, StringBuilder dsc, IWorldAccessor world, TransitionState state, bool nowSpoiling);
+
+#nullable enable
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockMeal))]
+    [HarmonyPatch("UpdateAndGetTransitionStates")]
+    public static bool FixBlockMealUpdateAndGetTransitionStates(BlockMeal __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
+    {
+        __result = CustomBlockMealUpdateAndGetTransitionStates(__instance, world, inslot);
+        return false;
+    }
+
+    public static TransitionState[]? CustomBlockMealUpdateAndGetTransitionStates(BlockMeal self, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot.Itemstack is not ItemStack mealStack) return null;
+
+        ItemStack[] stacks = self.GetNonEmptyContents(world, mealStack);
+        foreach (var stack in stacks)
+        {
+            stack.StackSize *= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        self.SetContents(mealStack, stacks);
+
+        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(self, world, inslot);
+
+        stacks = self.GetNonEmptyContents(world, mealStack);
+        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
+        {
+            for (int i = 0; i < stacks.Length; i++)
+            {
+                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
+                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
+
+                if (spoilProps == null) continue;
+
+                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockContainerGetContentInDummySlot(self, inslot, stacks[i]), spoilProps);
+            }
+            self.SetContents(mealStack, stacks);
+
+            mealStack.Attributes.RemoveAttribute("recipeCode");
+            mealStack.Attributes.RemoveAttribute("quantityServings");
+        }
+
+        foreach (var stack in stacks)
+        {
+            stack.StackSize /= (int)Math.Max(1, mealStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        self.SetContents(mealStack, stacks);
+
+        if (stacks.Length == 0 &&
+            AssetLocation.CreateOrNull(self.Attributes?["eatenBlock"]?.AsString()) is AssetLocation loc &&
+            world.GetBlock(loc) is Block block)
+        {
+            inslot.Itemstack = new ItemStack(block);
+            inslot.MarkDirty();
+        }
+
+        return states;
+    }
+
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockCookedContainer))]
+    [HarmonyPatch("UpdateAndGetTransitionStates")]
+    public static bool FixBlockCookedContainerUpdateAndGetTransitionStates(BlockCookedContainer __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
+    {
+        __result = CustomBlockCookedContainerUpdateAndGetTransitionStates(__instance, world, inslot);
+        return false;
+    }
+
+    public static TransitionState[]? CustomBlockCookedContainerUpdateAndGetTransitionStates(BlockCookedContainer self, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot.Itemstack is not ItemStack cookedContStack) return null;
+
+        ItemStack[] stacks = self.GetNonEmptyContents(world, cookedContStack);
+        foreach (var stack in stacks)
+        {
+            stack.StackSize *= (int)Math.Max(1, cookedContStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        self.SetContents(cookedContStack, stacks);
+
+        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(self, world, inslot);
+
+        stacks = self.GetNonEmptyContents(world, cookedContStack);
+        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
+        {
+            for (int i = 0; i < stacks.Length; i++)
+            {
+                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
+                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
+
+                if (spoilProps == null) continue;
+
+                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockCookedContainerBaseGetContentInDummySlot(self, inslot, stacks[i]), spoilProps);
+            }
+            self.SetContents(cookedContStack, stacks);
+
+            cookedContStack.Attributes.RemoveAttribute("recipeCode");
+            cookedContStack.Attributes.RemoveAttribute("quantityServings");
+        }
+
+        foreach (var stack in stacks)
+        {
+            stack.StackSize /= (int)Math.Max(1, cookedContStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        self.SetContents(cookedContStack, stacks);
+
+        if (stacks.Length == 0 && self.Attributes?["emptiedBlockCode"]?.AsString() is string emptiedBlockCode && world.GetBlock(new AssetLocation(emptiedBlockCode)) is Block block)
+        {
+            inslot.Itemstack = new ItemStack(block);
+            inslot.MarkDirty();
+        }
+
+        return states;
+    }
+
+    [HarmonyPrefix()]
+    [HarmonyPatch(typeof(BlockCrock))]
+    [HarmonyPatch("UpdateAndGetTransitionStates")]
+    public static bool FixBlockCrockUpdateAndGetTransitionStates(BlockCrock __instance, ref TransitionState[]? __result, IWorldAccessor world, ItemSlot inslot)
+    {
+        __result = CustomBlockCrockUpdateAndGetTransitionStates(__instance, world, inslot);
+        return false;
+    }
+
+    public static TransitionState[]? CustomBlockCrockUpdateAndGetTransitionStates(BlockCrock self, IWorldAccessor world, ItemSlot inslot)
+    {
+        if (inslot.Itemstack is not ItemStack crockStack) return null;
+
+        ItemStack[] stacks = self.GetNonEmptyContents(world, crockStack);
+        foreach (var stack in stacks)
+        {
+            stack.StackSize *= (int)Math.Max(1, crockStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        self.SetContents(crockStack, stacks);
+
+        TransitionState[]? states = CustomBlockContainerUpdateAndGetTransitionStates(self, world, inslot);
+
+        stacks = self.GetNonEmptyContents(world, crockStack);
+        if (stacks.Length == 0 || MealMeshCache.ContentsRotten(stacks))
+        {
+            for (int i = 0; i < stacks.Length; i++)
+            {
+                var transProps = stacks[i].Collectible.GetTransitionableProperties(world, stacks[i], null);
+                var spoilProps = transProps?.FirstOrDefault(props => props.Type == EnumTransitionType.Perish);
+
+                if (spoilProps == null) continue;
+
+                stacks[i] = stacks[i].Collectible.OnTransitionNow(BlockCookedContainerBaseGetContentInDummySlot(self, inslot, stacks[i]), spoilProps);
+            }
+            self.SetContents(crockStack, stacks);
+
+            crockStack.Attributes.RemoveAttribute("recipeCode");
+            crockStack.Attributes.RemoveAttribute("quantityServings");
+        }
+
+        foreach (var stack in stacks)
+        {
+            stack.StackSize /= (int)Math.Max(1, crockStack.Attributes.TryGetFloat("quantityServings") ?? 1);
+        }
+
+        self.SetContents(crockStack, stacks);
+
+        return states;
+    }
+
     #endregion
     #region GetHeldItemInfo
 
     /// Fix the display issue
 
-#nullable enable
     [HarmonyReversePatch]
     [HarmonyPatch(typeof(BlockContainer))]
     [HarmonyPatch("GetHeldItemInfo")]
