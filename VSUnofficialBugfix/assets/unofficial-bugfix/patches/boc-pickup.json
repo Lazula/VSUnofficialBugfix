@@ -1,0 +1,12 @@
+[
+    {
+        "file": "game:blocktypes/wax/bunchocandles.json",
+        "path": "/behaviors",
+        "op": "addmerge",
+        "value": [
+            {
+                "name": "BOCCollect"
+            }
+        ]
+    }
+]
