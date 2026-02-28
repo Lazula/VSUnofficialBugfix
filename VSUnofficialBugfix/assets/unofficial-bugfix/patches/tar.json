@@ -1,8 +1,0 @@
-[
-    {
-        "file": "game:itemtypes/liquid/tar",
-        "path": "/enabled",
-        "op": "add",
-        "value": false
-    }
-]
