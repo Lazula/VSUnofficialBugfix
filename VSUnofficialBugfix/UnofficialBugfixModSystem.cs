@@ -29,20 +29,20 @@ public class UnofficialBugfixModSystem : ModSystem
     public class CompatInfo
     {
         public string CategoryId { get; }
-        public string Name { get; }
+        public string ModName { get; }
         public bool ModFound { get; }
 
         public CompatInfo(string categoryId, string name)
         {
             CategoryId = categoryId;
-            Name = name;
+            ModName = name;
             ModFound = Api.ModLoader.IsModEnabled(name);
         }
 
         public CompatInfo(string categoryId, string name, string systemName)
         {
             CategoryId = categoryId;
-            Name = name;
+            ModName = name;
             ModFound = Api.ModLoader.IsModSystemEnabled($"{name}.{systemName}");
         }
 
@@ -50,7 +50,7 @@ public class UnofficialBugfixModSystem : ModSystem
         {
             Logger.Notification(Lang.Get(
                 "unofficial-bugfix:compat-notif",
-                Name,
+                ModName,
                 Lang.Get(ModFound ? "unofficial-bugfix:found" : "unofficial-bugfix:not found"),
                 Lang.Get(ModFound ? "unofficial-bugfix:disabled" : "unofficial-bugfix:enabled")
             ));
