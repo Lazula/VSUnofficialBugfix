@@ -16,6 +16,11 @@ public class BlockBehaviorBOCCollect : BlockBehaviorRightClickPickup
             return false;
         }
 
+        // We don't have access to the actual BlockCandle
+        // type because it's private, so we have to check
+        // the block code instead.
+        bool isBlockCandle = block.Code == "candle";
+
         if (block.Sounds?.Place is AssetLocation placeSound)
         {
             world.PlaySoundAt(placeSound, blockSel.Position, -0.4, byPlayer);
@@ -23,22 +28,44 @@ public class BlockBehaviorBOCCollect : BlockBehaviorRightClickPickup
         (world as IClientWorldAccessor)?.Player.TriggerFpAnimation(EnumHandInteract.HeldItemInteract);
 
         // Get the appropriate drops for a BOC with one candle
-        // should give this general mod support if there are
-        // other BOCs
-        Block oneCandleBlock = world.GetBlock(block.CodeWithPart("1", 1));
-        ItemStack[] givenCandles = oneCandleBlock.GetDrops(world, blockSel.Position, byPlayer);
-        foreach (ItemStack candleStack in givenCandles)
+        // or a single candle
+        if (isBlockCandle)
         {
-            byPlayer?.InventoryManager.TryGiveItemstack(candleStack);
-            if (candleStack.StackSize > 0)
+            ItemStack[] givenCandles = block.GetDrops(world, blockSel.Position, byPlayer);
+            foreach (ItemStack candleStack in givenCandles)
             {
-                world.SpawnItemEntity(candleStack, blockSel.Position);
+                byPlayer?.InventoryManager.TryGiveItemstack(candleStack);
+                if (candleStack.StackSize > 0)
+                {
+                    world.SpawnItemEntity(candleStack, blockSel.Position);
+                }
+            }
+        }
+        else
+        {
+
+            Block oneCandleBlock = world.GetBlock(block.CodeWithPart("1", 1));
+            ItemStack[] givenCandles = oneCandleBlock.GetDrops(world, blockSel.Position, byPlayer);
+            foreach (ItemStack candleStack in givenCandles)
+            {
+                byPlayer?.InventoryManager.TryGiveItemstack(candleStack);
+                if (candleStack.StackSize > 0)
+                {
+                    world.SpawnItemEntity(candleStack, blockSel.Position);
+                }
             }
         }
 
-        int.TryParse(block.LastCodePart(), out int stage);
-        Block nextblock = world.GetBlock(block.CodeWithPart("" + (stage - 1), 1));
-        world.BlockAccessor.SetBlock(stage > 1 ? nextblock.BlockId : 0, blockSel.Position);
+        if (isBlockCandle)
+        {
+            world.BlockAccessor.SetBlock(0, blockSel.Position);
+        }
+        else
+        {
+            int.TryParse(block.LastCodePart(), out int stage);
+            Block nextblock = world.GetBlock(block.CodeWithPart("" + (stage - 1), 1));
+            world.BlockAccessor.SetBlock(stage > 1 ? nextblock.BlockId : 0, blockSel.Position);
+        }
 
         handling = EnumHandling.PreventDefault;
         return true;

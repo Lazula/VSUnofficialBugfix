@@ -8,5 +8,15 @@
                 "name": "BOCCollect"
             }
         ]
+    },
+    {
+        "file": "game:blocktypes/wax/candle.json",
+        "path": "/behaviors",
+        "op": "addmerge",
+        "value": [
+            {
+                "name": "BOCCollect"
+            }
+        ]
     }
 ]
