@@ -4,5 +4,6 @@
     "not found": "not found",
     "enabled": "enabled",
     "disabled": "disabled",
-    "loaded": "Applied bugfix patches."
+    "loaded": "Applied bugfix patches.",
+    "game:block-candle": "Candle"
 }
