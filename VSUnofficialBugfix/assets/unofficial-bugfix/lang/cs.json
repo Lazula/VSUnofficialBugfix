@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Svíčka",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Místo upevnění na hlavě",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Místo na přívěsek",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Střední uložiště",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Místo na přikrývku",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Zadní úložný prostor",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Zadní úložný prostor",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Pravo přední úložný prostor",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Levo přední úložný prostor",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Místo pro medailon",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Úložný slot pro časové ozubené kolo (horní)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Úložný slot pro časové ozubené kolo (střední)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Úložný slot pro časové ozubené kolo (spodní)"
+}

@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "양초",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "머리 장착 부위",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "펜던트 부위",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "중앙 저장고",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "담요 장착 부위",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "뒷쪽 저장고",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "뒷쪽 옆면 저장고",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "오른쪽 앞 저장고",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "왼쪽 앞 저장고",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "메달리온 장착 부위",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "시한의 기어 저장 슬롯 (상단)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "시한의 기어 저장 슬롯 (중앙)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "시한의 기어 저장 슬롯 (하단)"
+}

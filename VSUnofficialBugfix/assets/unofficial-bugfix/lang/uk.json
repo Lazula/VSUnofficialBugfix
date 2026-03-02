@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Свічка",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Місце на голові тварини",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Місце кулона",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Середнє сховище",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Місце попони",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Заднє сховище",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Заднє бокове сховище",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Переднє праве сховище",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Переднє ліве сховище",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Місце медальйона",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Верхнє місце часопросторової шестерні",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Середнє місце часопросторової шестерні",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Нижнє місце часопросторової шестерні"
+}

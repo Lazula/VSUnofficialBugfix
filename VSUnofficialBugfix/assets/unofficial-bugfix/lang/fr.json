@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Bougie",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Emplacement de tête",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Emplacement du cou",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Stockage central",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Emplacement pour couverture",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Stockage arrière",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Stockage arrière latéral",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Stockage avant droit",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Stockage avant gauche",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Emplacement de médaillon",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Rangement pour un engrenage temporel (haut)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Rangement pour un engrenage temporel (milieu)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Rangement pour un engrenage temporel (bas)"
+}

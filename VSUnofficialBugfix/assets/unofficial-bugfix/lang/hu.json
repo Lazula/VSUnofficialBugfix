@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Gyertya",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Feji hely",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Függő hely",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Középső tárolóhely",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Takaró hely",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Hátsó tárolóhely",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Hátsó oldalsó tárolóhely",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Jobb első tárolóhely",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Bal első tárolóhely",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Medál hely",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Temporális fogaskerék tárolóhely (felső)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Temporális fogaskerék tárolóhely (középső)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Temporális fogaskerék tárolóhely (alsó)"
+}

@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Kerze",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Befestigungspunkt Kopf",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Platz für einen Anhänger",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Platz für einen Sattel",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Platz für eine Decke",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Hinterer Platz",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Hintere seitliche Plätze",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Vorderer rechter Platz",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Vorderer linker Platz",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Medaillonplatz",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Platz für ein TZ (oben)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Platz für ein TZ (mitte)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Platz für ein TZ (unten)"
+}

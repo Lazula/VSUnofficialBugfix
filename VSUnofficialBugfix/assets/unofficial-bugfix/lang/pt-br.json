@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Vela",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Espaço das rédeas",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Espaço de pingente",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Armazenamento central",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Espaço para manta",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Armazenamento traseiro",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Armazenamento lateral traseiro",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Armazenamento frontal direito",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Armazenamento frontal esquerdo",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Espaço para medalhão",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Espaço de armazenamento de engrenagem temporal (superior)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Espaço de armazenamento de engrenagem temporal (central)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Espaço de armazenamento de engrenagem temporal (inferior)"
+}

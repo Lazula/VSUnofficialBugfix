@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Vela",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Punto de montaje de cabezas",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Colocación Colgante",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Almacenamiento Intermedio",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Colocación de Manta Estribera",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Almacenamiento Trasero",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Almacenamiento Lateral",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Almacenamiento Frontal Derecho",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Almacenamiento Frontal Izquierdo",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Lugar para el Medallón",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Espacio de almacenamiento del engranaje temporal (arriba)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Espacio de almacenamiento de engranaje temporal (medio)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Espacio de almacenamiento del engranaje temporal (abajo)"
+}

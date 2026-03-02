@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Kerti",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Staður fyrir höfuðfestingu",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Staður fyrir hálsmen",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Miðhirsla",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Staður fyrir ábreiðu",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Aftari hirsla",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Aftari hliðarhirsla",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Fremri hægri hirsla",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Fremri vinstri hirsla",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Staður fyrir skrautgrip",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Geymsla fyrir stundlegan gír (efst)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Geymsla fyrir stundlegan gír (miðja)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Geymsla fyrir stundlegan gír (neðst)"
+}

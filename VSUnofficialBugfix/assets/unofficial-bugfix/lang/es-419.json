@@ -1,0 +1,15 @@
+{
+    "game:block-candle": "Vela",
+    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Espacio para accesorio de cabeza",
+    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Espacio para colgante",
+    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Almacenamiento medio",
+    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Espacio para mantilla",
+    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Almacenamiento trasero",
+    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Almacenamiento trasero lateral",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Almacenamiento frontal derecho",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Almacenamiento frontal izquierdo",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Lugar para el medallón",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Espacio de almacenamiento para engranaje temporal (arriba)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Espacio de almacenamiento para engranaje temporal (medio)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Espacio de almacenamiento para engranaje temporal (abajo)"
+}

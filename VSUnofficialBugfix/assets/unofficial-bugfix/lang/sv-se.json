@@ -1,0 +1,9 @@
+{
+    "game:block-candle": "Ljus",
+    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Främre högra förvaring",
+    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Främre vänstra förvaring",
+    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Plats för medaljong",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Förvaring för förgänglighets-kugghjul (översta)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Förvaring för förgänglighets-kugghjul (mitten)",
+    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Förvaring för förgänglighets-kugghjul (nedersta)"
+}
