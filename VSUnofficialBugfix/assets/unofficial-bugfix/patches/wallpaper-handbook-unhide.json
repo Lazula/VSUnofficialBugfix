@@ -1,0 +1,8 @@
+[
+    {
+        "file": "game:blocktypes/cloth/wallpaper.json",
+        "path": "/attributes/handbook/exclude",
+        "op": "replace",
+        "value": false
+    }
+]
