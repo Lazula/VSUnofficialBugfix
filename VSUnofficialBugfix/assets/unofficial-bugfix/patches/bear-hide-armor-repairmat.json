@@ -1,0 +1,119 @@
+[
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/0/ingredients/B/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/0/ingredients/R/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/1/ingredients/R/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/2/ingredients/B/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/2/ingredients/R/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/3/ingredients/B/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/3/ingredients/R/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/4/ingredients/B/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    },
+    {
+        "file": "game:recipes/grid/armor/hide.json",
+        "side": "server",
+        "path": "/4/ingredients/R/recipeAttributes",
+        "op": "addmerge",
+        "value": {
+            "repairMat": {
+                "type": "item",
+                "code": "hide-pelt-large",
+                "stacksize": 0
+            }
+        }
+    }
+]
