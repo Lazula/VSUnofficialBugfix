@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "Свечка",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Месца мацавання на галаве",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Месца для падвескі",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Сярэдняе сховішча",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Месца для вальтрапа",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Задняе сховішча",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Задняе бакавое сховішча",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Пярэдняе правае сховішча",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Пярэдняе левае сховішча",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Месца для медальёна",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Слот для захоўвання тэмпаральнай шасцярэнькі (верхні)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Слот для захоўвання тэмпаральнай шасцярэнькі (сярэдні)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Слот для захоўвання тэмпаральнай шасцярэнькі (ніжні)"
+    "game:block-candle": "Свечка"
 }

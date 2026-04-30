@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "Mum",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Başa takılan spot",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Sarkıt spot",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Orta depolama",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Battaniye lekesi",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Battaniye lekesi",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Arka tarafta depolama",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Ön sağ depolama",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Ön sol depolama",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Madalyon yeri",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Temporal dişli depolama yuvası (üst)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Temporal dişli depolama yuvası (orta)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Temporal dişli depolama yuvası (alt)"
+    "game:block-candle": "Mum"
 }

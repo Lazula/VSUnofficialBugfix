@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "Sviečka",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Miesto upevnenia na hlave",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Miesto upevnenia na krku",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Miesto upevnenia v strede",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Miesto na prikrývku",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Miesto upevnenia vzadu",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Miesto upevnenia vzadu nabokoch",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Miesto upevnenia vpredu naboku vpravo",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Miesto upevnenia vpredu naboku vpľavo",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Miesto pre medailón",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Miesto upevnenia pre časové koleso (hore)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Miesto upevnenia pre časové koleso (v strede)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Miesto upevnenia pre časové koleso (dole)"
+    "game:block-candle": "Sviečka"
 }

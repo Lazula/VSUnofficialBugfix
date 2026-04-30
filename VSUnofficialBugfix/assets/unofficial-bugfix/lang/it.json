@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "Candela",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Cavalcatura posto testa",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Posto pendente",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Deposito centro",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Spazio coperta",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Deposito posteriore",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Deposito posteriore laterale",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Deposito anteriore destro",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Deposito anteriore sinistro",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Posto medaglione",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Spazio deposito ingranaggio temporale (superiore)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Spazio deposito ingranaggio temporale (centrale)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Spazio deposito ingranaggio temporale (posteriore)"
+    "game:block-candle": "Candela"
 }

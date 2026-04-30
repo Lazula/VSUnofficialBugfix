@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "Nến",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Vị trí treo đầu",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Vị trí mặt dây chuyền",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Khoang giữa",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Vị trí chăn yên",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Khoang sau",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Khoang cạnh phía sau",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Khoang phải trước",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Khoang trái trước",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Vị trí huy hiệu",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Khe chứa bánh răng thời không (trên)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Khe chứa bánh răng thời không (giữa)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Khe chứa bánh răng thời không (dưới)"
+    "game:block-candle": "Nến"
 }

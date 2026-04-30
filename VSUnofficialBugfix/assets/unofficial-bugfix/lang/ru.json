@@ -5,17 +5,5 @@
     "enabled": "включено",
     "disabled": "отключено",
     "loaded": "Применены исправления ошибок.",
-    "game:block-candle": "Свеча",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Место крепления на голове",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Место для подвески",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Среднее хранилище",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Место для вальтрапа",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Заднее хранилище",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Заднее боковое хранилище",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Переднее правое хранилище",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Переднее левое хранилище",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Место для медальона",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Слот для хранения темпоральной шестерёнки (верхний)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Слот для хранения темпоральной шестерёнки (средний)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Слот для хранения темпоральной шестерёнки (нижний)"
+    "game:block-candle": "Свеча"
 }

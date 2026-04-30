@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "蠟燭",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "轡銜繫戴處",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "頸鍊懸掛處",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "上鞍處",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "韉毯披掛處",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "尾部儲物處",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "後側儲物處",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "前右儲物處",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "前左儲物處",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "垂飾配戴處",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "時場齒輪懸吊處 (上)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "時場齒輪懸吊處 (中)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "時場齒輪懸吊處 (下)"
+    "game:block-candle": "蠟燭"
 }

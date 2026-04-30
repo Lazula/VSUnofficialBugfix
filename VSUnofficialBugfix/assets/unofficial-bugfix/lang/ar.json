@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "شمعة",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "مكان تثبيت الرأس",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "بقعة قلادة",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "تخزين متوسط",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "بقعة بطانية",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "تخزين خلفي",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "تخزين الجانب الخلفي",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "تخزين أمامي يمين",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "تخزين أمامي يسار",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "بقعة ميدالية",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "فتحة تخزين العتاد المؤقتة (أعلى)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "فتحة تخزين العتاد المؤقتة (الوسطى)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "فتحة تخزين التروس المؤقتة (أسفل)"
+    "game:block-candle": "شمعة"
 }

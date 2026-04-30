@@ -14,19 +14,7 @@ from pathlib import Path
 
 # existing key name -> new key name
 MAPPINGS = {
-    "item-candle": "block-candle",
-    "creature*-elk-male-adult-selectionbox-HeadAP": "creature-*elk-female-adult-selectionbox-HeadAP",
-    "creature*-elk-male-adult-selectionbox-NeckAP": "creature-*elk-female-adult-selectionbox-NeckAP",
-    "creature*-elk-male-adult-selectionbox-MidAP":"creature-*elk-female-adult-selectionbox-MidAP",
-    "creature*-elk-male-adult-selectionbox-MidUnderAP": "creature-*elk-female-adult-selectionbox-MidUnderAP",
-    "creature*-elk-male-adult-selectionbox-RearAP": "creature-*elk-female-adult-selectionbox-RearAP",
-    "creature*-elk-male-adult-selectionbox-RearSideAP": "creature-*elk-female-adult-selectionbox-RearSideAP",
-    "creature*-elk-male-adult-selectionbox-RFrontAP":"creature-*elk-female-adult-selectionbox-RFrontAP",
-    "creature*-elk-male-adult-selectionbox-LFrontAP":"creature-*elk-female-adult-selectionbox-LFrontAP",
-    "creature*-elk-male-adult-selectionbox-FaceAP": "creature-*elk-female-adult-selectionbox-FaceAP",
-    "creature*-elk-male-adult-selectionbox-TempGear1AP": "creature-*elk-female-adult-selectionbox-TempGear1AP",
-    "creature*-elk-male-adult-selectionbox-TempGear2AP": "creature-*elk-female-adult-selectionbox-TempGear2AP",
-    "creature*-elk-male-adult-selectionbox-TempGear3AP": "creature-*elk-female-adult-selectionbox-TempGear3AP"
+    "item-candle": "block-candle"
 }
 
 def read_languages(lang_dir: str):

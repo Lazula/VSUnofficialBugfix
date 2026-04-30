@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "蜡烛",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "头饰挂点",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "吊饰挂点",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "鞍部存储",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "毛毯挂点",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "后背存储",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "后侧存储",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "右前侧存储",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "左前侧存储",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "徽章挂点",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "顶部时空齿轮存储栏位",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "中部时空齿轮存储栏位",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "底部时空齿轮存储栏位"
+    "game:block-candle": "蜡烛"
 }

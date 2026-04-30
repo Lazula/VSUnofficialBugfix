@@ -1,15 +1,3 @@
 {
-    "game:block-candle": "Świeca",
-    "game:creature-*-elk-female-adult-selectionbox-HeadAP": "Miejsce na głowie",
-    "game:creature-*-elk-female-adult-selectionbox-NeckAP": "Miejsce na zawieszkę",
-    "game:creature-*-elk-female-adult-selectionbox-MidAP": "Środkowe miejsce",
-    "game:creature-*-elk-female-adult-selectionbox-MidUnderAP": "Miejsce na czaprak",
-    "game:creature-*-elk-female-adult-selectionbox-RearAP": "Tylne miejsce",
-    "game:creature-*-elk-female-adult-selectionbox-RearSideAP": "Tylne boczne miejsce",
-    "game:creature-*-elk-female-adult-selectionbox-RFrontAP": "Przednie prawe miejsce",
-    "game:creature-*-elk-female-adult-selectionbox-LFrontAP": "Przednie lewe miejsce",
-    "game:creature-*-elk-female-adult-selectionbox-FaceAP": "Miejsce na medalion przynależności",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear1AP": "Miejsce na zębatkę temporalną (góra)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear2AP": "Miejsce na zębatkę temporalną (środek)",
-    "game:creature-*-elk-female-adult-selectionbox-TempGear3AP": "Miejsce na zębatkę temporalną (dół)"
+    "game:block-candle": "Świeca"
 }
