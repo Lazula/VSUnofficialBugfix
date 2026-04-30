@@ -72,9 +72,7 @@ public class UnofficialBugfixModSystem : ModSystem
             patcher = new Harmony(Mod.Info.ModID);
             patcher.PatchCategory(Mod.Info.ModID);
 
-            List<CompatInfo> allCompat = new List<CompatInfo>([
-                new CompatInfo("noncompat-slowtox", "SlowTox", "SlowToxSystem")
-            ]);
+            List<CompatInfo> allCompat = new([]);
 
             foreach (CompatInfo ci in allCompat)
             {
