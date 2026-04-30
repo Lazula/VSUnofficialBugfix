@@ -73,8 +73,7 @@ public class UnofficialBugfixModSystem : ModSystem
             patcher.PatchCategory(Mod.Info.ModID);
 
             List<CompatInfo> allCompat = new List<CompatInfo>([
-                new CompatInfo("noncompat-slowtox", "SlowTox", "SlowToxSystem"),
-                new CompatInfo("noncompat-xskills", "XSkills", "XSkills")
+                new CompatInfo("noncompat-slowtox", "SlowTox", "SlowToxSystem")
             ]);
 
             foreach (CompatInfo ci in allCompat)
