@@ -1,8 +1,0 @@
-[
-    {
-        "file": "game:itemtypes/food/legume.json",
-        "path": "/attributes/crockable",
-        "op": "replace",
-        "value": "false"
-    }
-]
