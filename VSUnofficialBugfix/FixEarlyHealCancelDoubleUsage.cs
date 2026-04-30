@@ -19,9 +19,9 @@ internal static class FixEarlyHealCancelDoubleUsage
     /// sync when Cancel happens. We can do server-to-
     /// -client, but not the other way.
     [HarmonyPostfix()]
-    [HarmonyPatch(typeof(BehaviorHealingItem))]
+    [HarmonyPatch(typeof(CollectibleBehaviorHealingItem))]
     [HarmonyPatch("OnHeldInteractStep")]
-    public static void FixOnHeldInteractStep(BehaviorHealingItem __instance, ref bool __result, float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling)
+    public static void FixOnHeldInteractStep(CollectibleBehaviorHealingItem __instance, ref bool __result, float secondsUsed, ItemSlot slot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, ref EnumHandling handling)
     {
         __result |= byEntity.World.Side.IsServer();
     }

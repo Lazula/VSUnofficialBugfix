@@ -66,7 +66,6 @@ public class UnofficialBugfixModSystem : ModSystem
     public override void Start(ICoreAPI api)
     {
         base.Start(api);
-        api.RegisterBlockBehaviorClass("BOCCollect", typeof(BlockBehaviorBOCCollect));
 
         if (!Harmony.HasAnyPatches(Mod.Info.ModID))
         {
